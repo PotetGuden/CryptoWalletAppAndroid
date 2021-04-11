@@ -1,16 +1,15 @@
 package com.example.cryptocurrency.details
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.cryptocurrency.Coins
-import com.example.cryptocurrency.MainViewModel
 import com.example.cryptocurrency.R
-import com.example.cryptocurrency.TransactionsViewModel
 import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
-import com.example.cryptocurrency.list.CurrencyFragment
+import com.example.cryptocurrency.list.CurrencyListFragment
+import com.example.cryptocurrency.list.TransactionsListFragment
 
 class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
 
@@ -70,6 +69,12 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
             button.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
+                fragmentManager?.beginTransaction()?.apply {
+                    replace(R.id.currency_fragment_container,
+                    TransactionsListFragment(),"TransactionListFragment")
+                    .commit()
+                }
+
             }
         }
     }

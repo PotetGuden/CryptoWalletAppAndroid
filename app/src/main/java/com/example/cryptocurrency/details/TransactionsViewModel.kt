@@ -1,7 +1,9 @@
-package com.example.cryptocurrency
+package com.example.cryptocurrency.details
 
 import android.content.Context
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrency.database.DataBase
@@ -13,6 +15,9 @@ import kotlinx.coroutines.launch
 class TransactionsViewModel : ViewModel() {
 
     private lateinit var transactionDao: TransactionsDAO
+
+    private val _transactionLiveData: MutableLiveData<Transactions> = MutableLiveData()
+    val transactionLiveData: LiveData<Transactions> = _transactionLiveData
 
     fun init(context: Context){
         transactionDao = DataBase.getDatabase(context).getTransactionDAO()

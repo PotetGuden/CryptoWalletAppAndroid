@@ -1,9 +1,6 @@
 package com.example.cryptocurrency.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
 import com.example.cryptocurrency.entities.Transactions
 
 @Dao
@@ -17,4 +14,9 @@ interface TransactionsDAO{
     @Delete
     suspend fun delete(transaction: Transactions)
 
+    @Query("select * from transactions_table order by transactionsId")
+    suspend fun fetchData() : List<Transactions>
+
+    @Query("select * from transactions_table where transactionsId = :id")
+    suspend fun fetchDataWithId(id : Long) : Transactions
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@color/white"
+    >
+    <ImageView
+        android:id="@+id/someImgNameHere"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:padding="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/someTextIdHere"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Sold"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
+        app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />
+
+    <TextView
+        android:id="@+id/someTextIdHere2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:text="0.001 BTC for 54.00 USD"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+
+        app:layout_constraintStart_toStartOf="@+id/someTextIdHere"
+        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+
+    <TextView
+        android:id="@+id/someTextIdHere3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="60dp"
+        android:text="Date Time"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/someTextIdHere4"
+        app:layout_constraintStart_toStartOf="@+id/someTextIdHere2"
+        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere2" />
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
