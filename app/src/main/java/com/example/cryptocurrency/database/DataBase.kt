@@ -4,12 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.Transaction
+import com.example.cryptocurrency.entities.Transactions
 
 const val DATABASE_NAME: String = "transactions_database"
 
 // Singleton database
-@Database(entities = [Transaction::class], version = 1) // Room handles which version
+@Database(entities = [Transactions::class], version = 1) // Room handles which version
 abstract class DataBase : RoomDatabase(){
     abstract fun getTransactionDAO() : TransactionsDAO
 

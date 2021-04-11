@@ -9,12 +9,12 @@ import com.example.cryptocurrency.entities.Transactions
 @Dao
 interface TransactionsDAO{
     @Insert
-    fun insert(transaction: Transactions)
+    suspend fun insert(transaction: Transactions)  // suspend fordi databasen kjører aldri fra main thread - suspend extender lifetime til coroutine
 
     @Update
-    fun update(transaction: Transactions)
+    suspend fun update(transaction: Transactions)
 
     @Delete
-    fun delete(transaction: Transactions)
+    suspend fun delete(transaction: Transactions)
 
 }
