@@ -1,6 +1,7 @@
 package com.example.cryptocurrency
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrency.database.DataBase
@@ -17,12 +18,13 @@ class TransactionsViewModel : ViewModel() {
         transactionDao = DataBase.getDatabase(context).getTransactionDAO()
     }
 
-    fun save(coinName: String?, updatedPrice: Float, amountOfCoin: Float){
+    fun save(coinName: String, updatedPrice: Float, amountOfCoin: Float){
         viewModelScope.launch{
-            if(coinName.isNullOrEmpty() || updatedPrice.isNaN() || amountOfCoin.isNaN()){ // trenger isNan?
+            /*if(coinName.isNullOrEmpty() ){ // trenger isNan?
                 return@launch // Kan vel legge inn en melding til user her?
-            }
+            }*/
             transactionDao.insert(Transactions(coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin))
+            Log.d("Save", "insert happend.")
         }
     }
 

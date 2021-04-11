@@ -8,6 +8,7 @@ import com.example.cryptocurrency.Coins
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentCoinInfoBinding
 import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
+import com.example.cryptocurrency.details.BuyCurrencyFragment
 
 
 class CurrencyFragment : Fragment(R.layout.fragment_currency) { // fragment_currency
@@ -53,6 +54,14 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) { // fragment_curr
             binding.someTextIdHere2.text = coinSymbol
             binding.someTextIdHere3.text = correctPriceFormat
             //binding.someTextIdHere4.text = correctPercentChangeFormat
+        }
+
+        binding.button.setOnClickListener{
+            fragmentManager?.beginTransaction()?.apply{
+                replace(R.id.currency_fragment_container, BuyCurrencyFragment.newInstance(imgName,coinName,coinSymbol,coinPrice))
+                    .addToBackStack("Currency")
+                    .commit()
+            }
         }
     }
 

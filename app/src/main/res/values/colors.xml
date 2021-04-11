@@ -12,5 +12,6 @@
     <color name="green">#FF00FF00</color>
     <color name="red">#FFFF0000</color>
     <color name="grey">#DCDCDC</color>
+    <color name="greyBorder">#888888</color>
 
 </resources>
