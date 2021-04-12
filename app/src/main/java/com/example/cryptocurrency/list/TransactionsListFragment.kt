@@ -21,11 +21,7 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
             replace(R.id.currency_fragment_container, TransactionFragment.newInstance(transactionID = transaction.transactionsId))
                 .addToBackStack("StudentFragment")
                 .commit()
-
         }
-
-        //setTextViewText
-
     }
 
     private val viewModel: TransactionsListViewModel by lazy {

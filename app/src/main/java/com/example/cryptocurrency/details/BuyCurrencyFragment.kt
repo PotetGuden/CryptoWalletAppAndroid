@@ -80,11 +80,11 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                     .commit()
                 }
 
-                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
+                viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice
                     val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                     balanceText.text = balance.toString()
-                }*/
+                }
                 /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                 balanceText.text = "NEW BALANCE"*/
             }

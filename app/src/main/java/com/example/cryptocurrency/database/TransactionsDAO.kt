@@ -17,6 +17,12 @@ interface TransactionsDAO{
     @Query("select * from transactions_table order by transactionsId")
     suspend fun fetchData() : List<Transactions>
 
+    /*@Query("select updatedPrice,amountOfCoin from transactions_table order by transactionsId") // burde ikke trenge order by
+    suspend fun fetchAmountAndPriceFromTransactions() : List<Transactions>*/
+
     @Query("select * from transactions_table where transactionsId = :id")
-    suspend fun fetchDataWithId(id : Long) : Transactions
+    suspend fun fetchDataWithId(id: Long) : Transactions
+
+    @Query("DELETE FROM transactions_table")
+    suspend fun deleteAll()
 }

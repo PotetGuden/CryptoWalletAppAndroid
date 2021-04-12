@@ -29,4 +29,18 @@ class TransactionsListViewModel : ViewModel() {
         }
     }
 
+    /*fun fetchAmountAndPriceFromTransactions(){
+        viewModelScope.launch {
+            val list = transactionDao.fetchAmountAndPriceFromTransactions()
+            _transactionListLiveData.value = list
+        }
+    }*/
+
+    fun deleteData(){
+        viewModelScope.launch {
+            transactionDao.deleteAll()
+        }
+    }
+
+
 }
