@@ -69,6 +69,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
             button.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
+
                 fragmentManager?.beginTransaction()?.apply {
                     replace(R.id.currency_fragment_container,
                     TransactionsListFragment(),"TransactionListFragment")

@@ -15,6 +15,9 @@ class MainActivity : AppCompatActivity() {
 
     val viewModel: MainViewModel by viewModels()
 
+    fun setTextViewText(newString: String){
+        binding.userBalance.text = newString
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,7 +26,9 @@ class MainActivity : AppCompatActivity() {
         //setContentView(R.layout.activity_main)
         setContentView(binding.root)
         supportActionBar?.hide()
-
+        fun setTextViewText(newString: String){
+            binding.userBalance.text = newString
+        }
         supportFragmentManager.beginTransaction()
             .replace(R.id.currency_fragment_container,
                 CurrencyListFragment(),"yolo")

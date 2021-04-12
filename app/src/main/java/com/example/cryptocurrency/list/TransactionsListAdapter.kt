@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentListBinding
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
@@ -16,7 +17,13 @@ class TransactionsListAdapter(val lambdaFunction: (Transactions) -> Unit) : Recy
 
     class ViewHolder(val binding: FragmentTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transactions) {
+            // Image
+            Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
+                binding.someImgNameHere
+            )
+            
             // Sold/Bought
+            binding.someTextIdHere.text = "BOUGHT"
             val amount : String = transaction.amountOfCoin.toString()
             val coinName : String = transaction.coinName
             val updatedPrice : String = transaction.updatedPrice.toString()
@@ -27,7 +34,7 @@ class TransactionsListAdapter(val lambdaFunction: (Transactions) -> Unit) : Recy
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val holder = ViewHolder(FragmentTransactionBinding.inflate(LayoutInflater.from(parent.context)))
+        val holder = ViewHolder(FragmentTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
         holder.itemView.setOnClickListener {
             lambdaFunction(transactionList[holder.adapterPosition])
         }

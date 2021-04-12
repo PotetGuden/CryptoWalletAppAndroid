@@ -64,21 +64,15 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
                 }
             }
         }*/
-        viewModel.transactionLiveData.observe(viewLifecycleOwner){
+        /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                 if (transactionID == null) {
                     Log.d("Ny Ting", "Noe nytt skjedde.")
                     viewModel.save(it.coinName, it.updatedPrice, it.amountOfCoin)
                 } else {
                     viewModel.update(transactionID!!, it.coinName, it.updatedPrice, it.amountOfCoin)
                 }
-        }
-        /*with(binding){
-            if (transactionID == null) {
-                viewModel.save(someTextIdHere.text.toString(), someTextIdHere2.text.toString().toFloat(), someTextIdHere3.text.toString().toFloat())
-            } else {
-                viewModel.update(transactionID!!, someTextIdHere.text.toString(), someTextIdHere2.text.toString().toFloat(), someTextIdHere3.text.toString().toFloat())
-            }
         }*/
+
 
     }
 }

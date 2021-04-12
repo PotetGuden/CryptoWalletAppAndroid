@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptocurrency.MainActivity
 import com.example.cryptocurrency.MainViewModel
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentListBinding
@@ -19,7 +20,10 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
             replace(R.id.currency_fragment_container, TransactionFragment.newInstance(transactionID = transaction.transactionsId))
                 .addToBackStack("StudentFragment")
                 .commit()
+
         }
+
+        //setTextViewText
 
     }
 
@@ -40,7 +44,8 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
             adapter.setTransactionList(it)
         }
 
-        viewModel.transactionListLiveData.observe(this){ currencies ->
+        // WTFFF
+        /*viewModel.transactionListLiveData.observe(this){ currencies ->
             binding.transactionsList.adapter = TransactionsListAdapter(){
                 fragmentManager?.beginTransaction()?.apply{
                     replace(R.id.currency_fragment_container, TransactionFragment.newInstance())
@@ -48,7 +53,7 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
                         .commit()
                 }
             }
-        }
+        }*/
     }
 
 }
