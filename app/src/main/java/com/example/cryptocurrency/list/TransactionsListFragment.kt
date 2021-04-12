@@ -2,6 +2,7 @@ package com.example.cryptocurrency.list
 
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,9 +41,15 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
         viewModel.init(requireContext())
         binding.transactionsList.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionsList.adapter =  adapter // TransactionsListAdapter() // eller bare adapter
+        var balance : Float = 0.0F
+
         viewModel.transactionListLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)
+            balance += it[0].updatedPrice*it[0].amountOfCoin
+            val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
+            balanceText.text = "Balance: ${balance.toString()}$"
         }
+
 
         // WTFFF
         /*viewModel.transactionListLiveData.observe(this){ currencies ->

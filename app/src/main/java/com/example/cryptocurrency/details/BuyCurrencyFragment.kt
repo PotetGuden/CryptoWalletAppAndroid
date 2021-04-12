@@ -3,11 +3,15 @@ package com.example.cryptocurrency.details
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asFlow
+import androidx.room.Transaction
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
+import com.example.cryptocurrency.entities.Transactions
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListFragment
 
@@ -76,6 +80,13 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                     .commit()
                 }
 
+                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
+                    var balance : Float = it.amountOfCoin*it.updatedPrice
+                    val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
+                    balanceText.text = balance.toString()
+                }*/
+                /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
+                balanceText.text = "NEW BALANCE"*/
             }
         }
     }

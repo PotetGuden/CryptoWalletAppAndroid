@@ -15,55 +15,23 @@ class MainActivity : AppCompatActivity() {
 
     val viewModel: MainViewModel by viewModels()
 
-    fun setTextViewText(newString: String){
-        binding.userBalance.text = newString
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         //setContentView(R.layout.activity_main)
         setContentView(binding.root)
         supportActionBar?.hide()
-        fun setTextViewText(newString: String){
-            binding.userBalance.text = newString
-        }
+
+        //binding.userBalance.text = newString
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.currency_fragment_container,
                 CurrencyListFragment(),"yolo")
             .commit()
 
-        viewModel.allCurrencies.observe(this){ currencies->
-            binding.tmpId.text = currencies.data.lastIndex.toString()
-            Glide.with(this).load("https://static.coincap.io/assets/icons/${currencies.data[1].symbol.toLowerCase()}@2x.png").into(
-                binding.image3
-            )
-        }
 
-        viewModel.bitcoin.observe(this){ coin->
-            binding.directlySpecificCoinTmpId.text = coin.data.id
-            Glide.with(this).load("https://static.coincap.io/assets/icons/" + coin.data.symbol.toLowerCase() + "@2x.png").into(
-                binding.image2
-            )
-            val correctPriceFormat: String = "$" + coin.data.priceUsd.substring(0,coin.data.priceUsd.indexOf(".")+3)
-            binding.directlySpecificCoinTmpIdValue.text = correctPriceFormat
-        }
-
-        viewModel.specificCoin.observe(this){ specificCurrency->
-            binding.usersChoiceCoinTmpId.text = specificCurrency.data.id
-            Glide.with(this).load("https://static.coincap.io/assets/icons/" + specificCurrency.data.symbol.toLowerCase() + "@2x.png").into(
-                binding.image
-            )
-
-        }
-
-        viewModel.error.observe(this) { error ->
-            if(error){
-                Snackbar.make(binding.root, "En feil skjedde, har du internet?", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Last på nytt", { viewModel.LoadBitcoin() }).show()
-            }
-        }
         //supportActionBar?.hide()
         /*Handler().postDelayed({
             val intent = Intent(this@MainActivity, HomeActivity::class.java)

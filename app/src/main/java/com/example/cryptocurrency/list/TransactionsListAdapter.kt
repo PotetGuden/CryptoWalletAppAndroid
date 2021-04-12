@@ -1,7 +1,9 @@
 package com.example.cryptocurrency.list
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import androidx.recyclerview.widget.RecyclerView
@@ -21,7 +23,10 @@ class TransactionsListAdapter(val lambdaFunction: (Transactions) -> Unit) : Recy
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
                 binding.someImgNameHere
             )
-            
+
+            /*val textview = activity!!.findViewById<View>(R.id.user_balance) as TextView
+            textview.text = "NEW BALANCE"*/
+
             // Sold/Bought
             binding.someTextIdHere.text = "BOUGHT"
             val amount : String = transaction.amountOfCoin.toString()
