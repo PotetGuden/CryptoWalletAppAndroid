@@ -1,19 +1,15 @@
 package com.example.cryptocurrency
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.ActivityMainBinding
 import com.example.cryptocurrency.details.PortofolioFragment
-import com.example.cryptocurrency.list.CurrencyFragment
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
-import com.google.android.material.snackbar.Snackbar
 
 // NOTE: Fordi man "kapper" floaten sånn at man bare får x antall siffer etter 0, så vil det egt bli litt feilmargin i balance/transaksjon
 
@@ -39,6 +35,7 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         viewModel.init(this)
+        viewModel.fetchAllData()
         updateBalance()
 
 

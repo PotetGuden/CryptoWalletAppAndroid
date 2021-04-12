@@ -26,7 +26,9 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
         binding = FragmentListBinding.bind(view)
         binding.currencyList.layoutManager = LinearLayoutManager(requireContext())
         currencyListViewModel.allCurrencies.observe(this){ currencies ->
+            // for å liste ut alle currencies
             binding.currencyList.adapter = CurrencyListAdapter(currencies){
+                // for onclick
                 fragmentManager?.beginTransaction()?.apply{
                     replace(R.id.currency_fragment_container, CurrencyFragment.newInstance(it))
                             .addToBackStack("Currency")

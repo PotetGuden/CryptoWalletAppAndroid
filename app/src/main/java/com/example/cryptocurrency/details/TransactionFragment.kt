@@ -11,6 +11,8 @@ import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.list.TransactionsListViewModel
 
+// BRUKER IKKE DENNE CLASSEN
+
 class TransactionFragment : Fragment(R.layout.fragment_transaction) {
 
     private var transactionID: Long? = null
@@ -39,7 +41,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
         // View listeners
         initViewListeners()
 
-        viewModel.transactionLiveData.observe(viewLifecycleOwner) {
+        /*viewModel.transactionLiveData.observe(viewLifecycleOwner) {
             with(binding) {
                 val amount : String = it.amountOfCoin.toString()
                 val coinName : String = it.coinName
@@ -51,7 +53,7 @@ class TransactionFragment : Fragment(R.layout.fragment_transaction) {
                 someTextIdHere3.text = it.updatedPrice.toString()
                 //saveButton.setText(R.string.update)
             }
-        }
+        }*/
     }
 
     private fun initViewListeners() {

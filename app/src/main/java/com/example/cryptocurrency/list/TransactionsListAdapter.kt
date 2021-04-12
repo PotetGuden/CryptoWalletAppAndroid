@@ -13,7 +13,7 @@ import com.example.cryptocurrency.databinding.FragmentListBinding
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
 
-class TransactionsListAdapter(val lambdaFunction: (Transactions) -> Unit) : RecyclerView.Adapter<TransactionsListAdapter.ViewHolder>(){
+class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.ViewHolder>(){
 
     private val transactionList = mutableListOf<Transactions>()
 
@@ -39,11 +39,7 @@ class TransactionsListAdapter(val lambdaFunction: (Transactions) -> Unit) : Recy
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val holder = ViewHolder(FragmentTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
-        holder.itemView.setOnClickListener {
-            lambdaFunction(transactionList[holder.adapterPosition])
-        }
-        return holder
+        return ViewHolder(FragmentTransactionBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
