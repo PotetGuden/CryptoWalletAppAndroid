@@ -26,8 +26,16 @@ interface TransactionsDAO{
     @Query("select SUM(amountOfCoin) from transactions_table where coinName = :coinName")
     suspend fun fetchSumAmountByCoinName(coinName: String) : List<Float>
 
-    /*@Query("select SUM(amountOfCoin) as totalCoins, coinName from transactions_table group by coinName having SUM(amountOfCoin) > 0;")
-    suspend fun fetchTotalAmountOfCoinsPerCoin() : List<Transactions>*/
+
+
+    @Query("select SUM(amountOfCoin) as totalCoins from transactions_table group by coinName having SUM(amountOfCoin) > 0;")
+    suspend fun fetchTotalAmountOfCoinsPerCoin() : List<Float>
+
+    @Query("select coinName from transactions_table group by coinName having SUM(amountOfCoin) > 0;")
+    suspend fun fetchNameAmountOfCoins() : List<String>
+
+
+
 
     @Query("select * from transactions_table where transactionsId = :id")
     suspend fun fetchDataWithId(id: Long) : Transactions

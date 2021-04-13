@@ -18,6 +18,9 @@ class TransactionsListViewModel : ViewModel() {
     private val _sumAmountOfCoinsListLiveData : MutableLiveData<List<Float>> = MutableLiveData()
     val sumAmountOfCoinsListLiveData : LiveData<List<Float>> = _sumAmountOfCoinsListLiveData
 
+    private val _sumCoinNameListLiveData : MutableLiveData<List<String>> = MutableLiveData()
+    val sumAmountCoinNameListLiveData : LiveData<List<String>> = _sumCoinNameListLiveData
+
     private lateinit var transactionDao: TransactionsDAO
 
     fun init(context: Context){
@@ -46,12 +49,19 @@ class TransactionsListViewModel : ViewModel() {
         }
     }
 
-    /*fun fetchTotalAmountOfCoinsPerCoin(){
+    fun fetchTotalAmountOfCoinsPerCoin(){
         viewModelScope.launch {
             val list = transactionDao.fetchTotalAmountOfCoinsPerCoin()
-            _transactionListLiveData.value = list
+            _sumAmountOfCoinsListLiveData.value = list
         }
-    }*/
+    }
+
+    fun fetchNameAmountOfCoins(){
+        viewModelScope.launch {
+            val list = transactionDao.fetchNameAmountOfCoins()
+            _sumCoinNameListLiveData.value = list
+        }
+    }
 
     /*fun fetchAmountAndPriceFromTransactions(){
         viewModelScope.launch {
