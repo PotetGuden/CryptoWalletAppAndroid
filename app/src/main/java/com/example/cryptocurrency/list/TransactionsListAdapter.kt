@@ -1,15 +1,9 @@
 package com.example.cryptocurrency.list
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.cryptocurrency.R
-import com.example.cryptocurrency.databinding.FragmentListBinding
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
 
@@ -19,11 +13,9 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
 
     class ViewHolder(val binding: FragmentTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transactions) {
-            // Image
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
                 binding.someImgNameHere
             )
-
             /*val textview = activity!!.findViewById<View>(R.id.user_balance) as TextView
             textview.text = "NEW BALANCE"*/
 

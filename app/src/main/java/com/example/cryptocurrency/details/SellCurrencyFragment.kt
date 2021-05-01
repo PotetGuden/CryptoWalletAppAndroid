@@ -3,35 +3,24 @@ package com.example.cryptocurrency.details
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.asFlow
-import androidx.room.Transaction
-import com.bumptech.glide.Glide
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
-import com.example.cryptocurrency.entities.Transactions
-import com.example.cryptocurrency.list.CurrencyListFragment
-import com.example.cryptocurrency.list.TransactionsListFragment
-import java.math.BigDecimal
-import java.math.RoundingMode
-import java.text.DecimalFormat
-import java.text.NumberFormat
+import com.example.cryptocurrency.databinding.FragmentSellCurrencyBinding
 
-class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
-
+class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
     private var transactionsID: Long? = null
-    private lateinit var binding: FragmentBuyCurrencyBinding
+    private lateinit var binding: FragmentSellCurrencyBinding
     private val  viewModel: TransactionsViewModel by lazy(){
         ViewModelProvider(this).get(TransactionsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding = FragmentBuyCurrencyBinding.bind(view)
+        binding = FragmentSellCurrencyBinding.bind(view)
         transactionsID = arguments?.getLong("transactionsID")
 
         viewModel.init(requireContext())
@@ -48,13 +37,13 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         } else{
 
             initViewListeners(coinName, coinPrice)
-            binding.button.text = "BUY"
+            binding.button2.text = "SELL"
             binding.coinSymbol.text = coinSymbol
-            binding.balanceMessage.text = "You can only buy cryptocurrency in USD\n\nYou have 'BALANCE' USD"
+            binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
             //binding.someTextIdHere4.text = correctPercentChangeFormat*/
         }
 
-        binding.editText.addTextChangedListener(object : TextWatcher{
+        binding.editText.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -71,7 +60,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
     }
 
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
-        fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float): BuyCurrencyFragment = BuyCurrencyFragment().apply{
+        fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float): SellCurrencyFragment = SellCurrencyFragment().apply{
             arguments = Bundle().apply{
                 //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
 
@@ -86,7 +75,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
 
     private fun initViewListeners(coinName: String, coinPrice: String){
         with(binding){
-            button.setOnClickListener{
+            button2.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
 
@@ -104,5 +93,4 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
 
         }
     }
-
 }

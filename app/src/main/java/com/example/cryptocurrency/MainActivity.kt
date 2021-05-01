@@ -1,5 +1,6 @@
 package com.example.cryptocurrency
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -11,7 +12,7 @@ import com.example.cryptocurrency.details.PortofolioFragment
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
 
-// NOTE: Fordi man "kapper" floaten sånn at man bare får x antall siffer etter 0, så vil det egt bli litt feilmargin i balance/transaksjon
+// NOTE: Fordi man "kapper" floaten sånn at man bare får x antall siffer etter 0, så vil det egt bli litt feilmargin i balance/transaksjon (not)
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -60,6 +61,12 @@ class MainActivity : AppCompatActivity() {
                 balanceText.text = "Balance: ${balance.toString()}$"
             }
         }*/
+        binding.test.setOnClickListener{
+            var intent = Intent(this, PurchaseActivity::class.java)
+            //intent.putExtra("Coins", it)
+            startActivity(intent)
+        }
+
 
 
         val deleteBtn = findViewById<View>(R.id.delete_id)

@@ -65,7 +65,7 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) { // fragment_curr
 
         binding.button.setOnClickListener{
             fragmentManager?.beginTransaction()?.apply{
-                replace(R.id.currency_fragment_container, BuyCurrencyFragment.newInstance(imgName,coinName,coinSymbol,coinPrice))
+                replace(R.id.currency_fragment_container, BuyCurrencyFragment.newInstance(imgName,coinName,coinSymbol,coinPrice, 12F))
                     .addToBackStack("Currency")
                     .commit()
             }
