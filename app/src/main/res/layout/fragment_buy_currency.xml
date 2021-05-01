@@ -75,14 +75,14 @@
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
 
         <TextView
-            android:id="@+id/textView"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="15dp"
+            android:textColor="@color/black"
             android:text="USD"
             android:textSize="18sp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,12 +90,17 @@
             android:id="@+id/editText"
             android:layout_width="150dp"
             android:layout_height="50dp"
+            android:background="@drawable/square_box"
+            android:paddingStart="5dp"
+            android:textColor="@color/black"
+            android:inputType="numberDecimal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/someTextIdHere5"
+            app:layout_constraintStart_toEndOf="@+id/coinSymbol"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/someTextIdHere5"
+
+            android:id="@+id/coinSymbol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="80dp"
@@ -113,23 +118,52 @@
             android:background="@drawable/square_box"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="15dp"
-            app:layout_constraintStart_toEndOf="@+id/someTextIdHere5"
+            android:textColor="@color/black"
+            android:text="1000"
+            android:textAlignment="center"
+            app:layout_constraintStart_toEndOf="@+id/coinSymbol"
             app:layout_constraintTop_toBottomOf="@+id/editText" />
 
         <Button
             android:id="@+id/button"
             android:layout_width="120dp"
             android:layout_height="60dp"
-            android:text="Buy"
+            android:text="xd"
             android:layout_marginTop="15dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editText2" />
 
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2">
 
+        <TextView
+            android:id="@+id/balanceMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/square_box"
+            android:textColor="@color/black"
+            android:padding="5dp"
+            android:text="You can only sell cryptocurrency in USD\n\nYou have xxx BTC"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </TextView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

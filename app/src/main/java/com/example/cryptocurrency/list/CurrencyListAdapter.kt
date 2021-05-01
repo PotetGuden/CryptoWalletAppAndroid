@@ -32,10 +32,6 @@ class CurrencyListAdapter(val currencyListView: AllCurrencies,
                      val onClick : (Coins) -> Unit)
         : RecyclerView.ViewHolder(binding.root){
         fun binding(currency: Coins) {
-            //binding.someImgNameHere.setImageResource(item)
-            /*Glide.with(CurrencyFragment.newInstance()).load(item).into(
-                    binding.someImgNameHere
-            )*/
             val imageString = "https://static.coincap.io/assets/icons/${currency.symbol.toLowerCase()}@2x.png"
             Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
             val correctPriceFormat: String = "$" + currency.priceUsd.substring(0,currency.priceUsd.indexOf(".")+3)

@@ -32,9 +32,12 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
 
         viewModel.transactionListLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)
-            balance += it[0].updatedPrice*it[0].amountOfCoin
+            //balance += it[0].updatedPrice*it[0].amountOfCoin
+            for(i in it){
+                balance += i.updatedPrice * i.amountOfCoin
+            }
             val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
-            balanceText.text = "Balance: ${balance.toString()}$"
+            balanceText.text = "Balance: ${balance}$"
         }
 
 
