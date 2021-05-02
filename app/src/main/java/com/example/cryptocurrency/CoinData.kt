@@ -19,8 +19,7 @@ data class Coins(
     val marketCapUsd: String,
     val volumeUsd24Hr: String,
     val priceUsd: String,
-    val changePercent24Hr: String,
-    val explorer: String)
+    val changePercent24Hr: String)
 
 data class SingleCoin(
     val data: Coins

@@ -37,33 +37,12 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
         viewModel.fetchAllData()
 
         binding.currencyList.layoutManager = LinearLayoutManager(requireContext())
-        /*currencyListViewModel.allCurrencies.observe(this){ currencies ->
-            // for å liste ut alle currencies
-            binding.currencyList.adapter = CurrencyListAdapter(currencies){
-                // for onclick
-                fragmentManager?.beginTransaction()?.apply{
-                    var coinName = it.symbol
-                    var amountOfCoins = 0F
-                    viewModel.transactionListLiveData.observe(viewLifecycleOwner){
-                        // alle transaksjoner
-                        for(transaction in it){
-                            if(coinName == transaction.coinName){
-                                amountOfCoins += transaction.amountOfCoin
-                            }
-                        }
-                    }
-                    replace(R.id.currency_fragment_container, CurrencyFragment.newInstance(it, amountOfCoins))
-                            .addToBackStack("Currency")
-                            .commit()
-                }
-            }
-        }*/
 
-        currencyListViewModel.allCurrencies.observe(this){ currencies ->
+        currencyListViewModel.allCurrencies.observe(viewLifecycleOwner){ currencies ->
             // for å liste ut alle currencies
             binding.currencyList.adapter = CurrencyListAdapter(currencies){
                 // for onclick
-                fragmentManager?.beginTransaction()?.apply{
+                parentFragmentManager.beginTransaction().apply{
                     var coinName = it.symbol
                     var amountOfCoins = 0F
                     viewModel.transactionListLiveData.observe(viewLifecycleOwner){
@@ -74,9 +53,6 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                             }
                         }
                     }
-                    /*replace(R.id.currency_fragment_container, CurrencyFragment.newInstance(it, amountOfCoins))
-                            .addToBackStack("Currency")
-                            .commit()*/
                     var intent = Intent(activity, PurchaseActivity::class.java)
                     val imageString = "https://static.coincap.io/assets/icons/${it.symbol.toLowerCase()}@2x.png"
                     intent.putExtra("imageString", imageString)
@@ -86,11 +62,8 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                     intent.putExtra("amountOfCoins", amountOfCoins)
 
                     startActivity(intent)
-
                 }
             }
         }
-
-
     }
 }

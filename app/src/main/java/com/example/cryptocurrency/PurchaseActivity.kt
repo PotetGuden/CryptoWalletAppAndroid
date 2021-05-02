@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-
 import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
 import com.example.cryptocurrency.details.BuyCurrencyFragment
 import com.example.cryptocurrency.details.SellCurrencyFragment
+import com.example.cryptocurrency.details.TransactionsViewModel
 import com.example.cryptocurrency.list.CurrencyFragment
+import com.example.cryptocurrency.list.TransactionsListViewModel
 
 class PurchaseActivity : AppCompatActivity() {
 
@@ -32,6 +35,22 @@ class PurchaseActivity : AppCompatActivity() {
         super.onStart()
         Log.d("Purchase Activity", "onStart")
     }
+
+    val viewModel: TransactionsListViewModel by viewModels()
+
+    fun test(){
+        val coinName: String? = intent?.getStringExtra("coinName")
+        if(coinName != null){
+            viewModel.fetchAllData()
+            viewModel.fetchAmountOfCoinsByName(coinName)
+
+            val test: Float? = viewModel.sumAmountOfCoinsByNameLiveData.value
+            if(test != null){
+                binding.someTextIdHere5.text = "TESTING ${test}"
+            }
+        }
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +80,10 @@ class PurchaseActivity : AppCompatActivity() {
             binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
         }
 
+        binding.button3.setOnClickListener{
+            test()
+        }
+
         binding.button.setOnClickListener{
             supportFragmentManager.beginTransaction().apply{
                 replace(R.id.purchase_fragment_container, BuyCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins))
@@ -76,6 +99,8 @@ class PurchaseActivity : AppCompatActivity() {
                     .commit()
             }
         }
+
+
     }
 
     private fun showError() {

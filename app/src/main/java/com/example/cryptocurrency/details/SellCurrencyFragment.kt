@@ -29,7 +29,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         val coinName : String? = arguments?.getString("coinName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
-        val amountOfCoins : Float = arguments!!.getFloat("amountOfCoins")
+        val amountOfCoins : Float = requireArguments().getFloat("amountOfCoins")
         val correctPriceFormat: String = "$" + coinPrice?.substring(0,coinPrice.indexOf(".")+3)
 
         if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null ){
@@ -76,16 +76,16 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
     private fun initViewListeners(coinName: String, coinPrice: String){
         with(binding){
             button2.setOnClickListener{
-                val amountOfCoins = editText.text.toString().toFloat()
+                val amountOfCoins = editText.text.toString().toFloat() * -1F
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
 
-                viewModel.transactionLiveData.observe(viewLifecycleOwner){
+                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice
                     val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                     balanceText.text = balance.toString()
                 }
 
-                fragmentManager?.popBackStack()
+                fragmentManager?.popBackStack()*/
                 /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                 balanceText.text = "NEW BALANCE"*/
             }

@@ -1,11 +1,13 @@
 package com.example.cryptocurrency.details
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.Coins
+import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentPortofolioItemBinding
 
 import com.example.cryptocurrency.entities.Transactions
@@ -22,17 +24,23 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
 
     class ViewHolder(val binding: FragmentPortofolioItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(coinName: String, amountOfCoin: Float, updatedPrice: String) {
-            // DO SHIT HERE
+            if(coinName == "usd"){
+                val imageString = "https://static.coincap.io/assets/icons/${coinName}@2x.png"
+                Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
+                binding.someTextIdHere.setTextColor(Color.GREEN)
+                binding.someTextIdHere.text = "${updatedPrice} $"
+            } else{
+                val imageString = "https://static.coincap.io/assets/icons/${coinName.toLowerCase()}@2x.png"
+                Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
+                val correctPriceFormat: String = updatedPrice.substring(0,updatedPrice.indexOf(".")+3)
+                //val correctPercentChangeFormat: String = currency.changePercent24Hr.substring(0,currency.changePercent24Hr.indexOf(".")+3) + "%"
 
-            val imageString = "https://static.coincap.io/assets/icons/${coinName.toLowerCase()}@2x.png"
-            Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
-            val correctPriceFormat: String = updatedPrice.substring(0,updatedPrice.indexOf(".")+3)
-            //val correctPercentChangeFormat: String = currency.changePercent24Hr.substring(0,currency.changePercent24Hr.indexOf(".")+3) + "%"
+                binding.someTextIdHere.text = "${amountOfCoin.toString()} x ${correctPriceFormat}"
+                val sum = updatedPrice.toFloat()* amountOfCoin
+                val correctSum = sum.toString().substring(0,sum.toString().indexOf(".")+3)
+                binding.someTextIdHere2.text = "${correctSum} USD"
+            }
 
-            binding.someTextIdHere.text = "${amountOfCoin.toString()} x ${correctPriceFormat}"
-            val sum = updatedPrice.toFloat()* amountOfCoin
-            val correctSum = sum.toString().substring(0,sum.toString().indexOf(".")+3)
-            binding.someTextIdHere2.text = "${correctSum} USD"
         }
 
     }
@@ -51,6 +59,8 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
             if(updatedPriceList[i].symbol == coinNameList[position]){
                 Log.d("UpdatedPriceList Symbol / coinNameList: ", updatedPriceList[i].symbol + " " + coinNameList[position])
                 holder.bind(coinNameList[position], amountOfCoinsList[position], updatedPriceList[i].priceUsd)
+            } else if(coinNameList[position] == "usd"){
+                holder.bind("usd", 1F, "10000")
             }
         }
         //holder.bind(transactionList[position], coinNameList[position], amountOfCoinsList[position])

@@ -1,5 +1,6 @@
 package com.example.cryptocurrency.details
 
+import android.content.Intent.getIntent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -40,7 +41,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         val coinName : String? = arguments?.getString("coinName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
-        val amountOfCoins : Float = arguments!!.getFloat("amountOfCoins")
+        val amountOfCoins : Float = requireArguments().getFloat("amountOfCoins")
         val correctPriceFormat: String = "$" + coinPrice?.substring(0,coinPrice.indexOf(".")+3)
 
         if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null ){
@@ -90,13 +91,13 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                 val amountOfCoins = editText.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
 
-                viewModel.transactionLiveData.observe(viewLifecycleOwner){
+                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice
                     val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                     balanceText.text = balance.toString()
                 }
 
-                fragmentManager?.popBackStack()
+                fragmentManager?.popBackStack()*/
                 /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
                 balanceText.text = "NEW BALANCE"*/
             }

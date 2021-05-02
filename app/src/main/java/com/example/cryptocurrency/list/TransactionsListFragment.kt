@@ -32,25 +32,12 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
 
         viewModel.transactionListLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)
-            //balance += it[0].updatedPrice*it[0].amountOfCoin
+
             for(i in it){
                 balance += i.updatedPrice * i.amountOfCoin
             }
-            val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
+            val balanceText = requireActivity().findViewById<View>(R.id.user_balance) as TextView
             balanceText.text = "Balance: ${balance}$"
         }
-
-
-        // WTFFF
-        /*viewModel.transactionListLiveData.observe(this){ currencies ->
-            binding.transactionsList.adapter = TransactionsListAdapter(){
-                fragmentManager?.beginTransaction()?.apply{
-                    replace(R.id.currency_fragment_container, TransactionFragment.newInstance())
-                        .addToBackStack("Currency")
-                        .commit()
-                }
-            }
-        }*/
     }
-
 }

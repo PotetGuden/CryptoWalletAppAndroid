@@ -14,30 +14,27 @@ interface TransactionsDAO{
     @Delete
     suspend fun delete(transaction: Transactions)
 
-    @Query("select * from transactions_table order by transactionsId")
+    @Query("SELECT * FROM transactions_table ORDER BY transactionsId")
     suspend fun fetchData() : List<Transactions>
 
     /*@Query("select updatedPrice,amountOfCoin from transactions_table order by transactionsId") // burde ikke trenge order by
     suspend fun fetchAmountAndPriceFromTransactions() : List<Transactions>*/
-    @Query("select * from transactions_table where coinName = :coinName")
+    @Query("SELECT * FROM transactions_table WHERE coinName = :coinName")
     suspend fun fetchDataByCurrencySymbolName(coinName: String) : List<Transactions>
 
 
-    @Query("select SUM(amountOfCoin) from transactions_table where coinName = :coinName")
-    suspend fun fetchSumAmountByCoinName(coinName: String) : List<Float>
+    @Query("SELECT SUM(amountOfCoin) FROM transactions_table WHERE coinName = :coinName")
+    suspend fun fetchSumAmountByCoinName(coinName: String) : Float
 
 
-
-    @Query("select SUM(amountOfCoin) as totalCoins from transactions_table group by coinName having SUM(amountOfCoin) > 0;")
+    @Query("SELECT SUM(amountOfCoin) AS totalCoins FROM transactions_table GROUP BY coinName HAVING SUM(amountOfCoin) > 0;")
     suspend fun fetchTotalAmountOfCoinsPerCoin() : List<Float>
 
-    @Query("select coinName from transactions_table group by coinName having SUM(amountOfCoin) > 0;")
+    @Query("SELECT coinName FROM transactions_table GROUP BY coinName HAVING SUM(amountOfCoin) > 0;")
     suspend fun fetchNameAmountOfCoins() : List<String>
 
 
-
-
-    @Query("select * from transactions_table where transactionsId = :id")
+    @Query("SELECT * FROM transactions_table WHERE transactionsId = :id")
     suspend fun fetchDataWithId(id: Long) : Transactions
 
     @Query("DELETE FROM transactions_table")
