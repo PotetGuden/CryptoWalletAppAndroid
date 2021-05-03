@@ -7,7 +7,9 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asFlow
 import androidx.room.Transaction
@@ -17,6 +19,7 @@ import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
 import com.example.cryptocurrency.entities.Transactions
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListFragment
+import com.example.cryptocurrency.list.TransactionsListViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -29,6 +32,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
     private val  viewModel: TransactionsViewModel by lazy(){
         ViewModelProvider(this).get(TransactionsViewModel::class.java)
     }
+    private val transactionListViewModel: TransactionsListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -47,28 +51,39 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null ){
 
         } else{
-
             initViewListeners(coinName, coinPrice)
             binding.button.text = "BUY"
             binding.coinSymbol.text = coinSymbol
-            binding.balanceMessage.text = "You can only buy cryptocurrency in USD\n\nYou have 'BALANCE' USD"
-            //binding.someTextIdHere4.text = correctPercentChangeFormat*/
+
+            transactionListViewModel.init(requireContext())
+            transactionListViewModel.fetchSumBalance()
+
+            var balanceUSD = 0F
+            transactionListViewModel.sumBalance.observe(viewLifecycleOwner){    balance ->
+                balanceUSD += balance*-1F       // Convert negative value to positive, because of database structure
+                binding.balanceMessage.text = "You can only buy cryptocurrency in USD\n\nYou have ${balanceUSD} USD"
+                Log.d("BALANCE USD IN OBSERVE", balanceUSD.toString())
+            }
+
+
+            binding.editText.addTextChangedListener(object : TextWatcher{
+                override fun afterTextChanged(s: Editable?) {}
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    if(s.toString() != ""){
+                        binding.button.isEnabled = s.toString().toFloat() <= balanceUSD
+
+                        var currencyAmount: Double = s.toString().toDouble() / coinPrice.toDouble()
+                        //BigDecimal(currencyAmount).setScale(2, RoundingMode.HALF_EVEN)
+                        binding.editText2.text = currencyAmount.toString()
+                    } else{
+                        binding.editText2.text = ""
+                    }
+                }
+            })
         }
 
-        binding.editText.addTextChangedListener(object : TextWatcher{
 
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if(s.toString().toFloatOrNull() != null){
-                    var currencyAmount: Double = s.toString().toDouble() / coinPrice!!.toDouble()
-                    //BigDecimal(currencyAmount).setScale(2, RoundingMode.HALF_EVEN)
-                    binding.editText2.setText(currencyAmount.toString())
-                } else{
-                    binding.editText2.setText("")
-                }
-            }
-        })
     }
 
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
@@ -88,9 +103,11 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
     private fun initViewListeners(coinName: String, coinPrice: String){
         with(binding){
             button.setOnClickListener{
-                val amountOfCoins = editText.text.toString().toFloat()
+                //val amountOfUSD = editText.text.toString().toFloat()
+                val amountOfCoins = editText2.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
 
+                parentFragmentManager.popBackStack()
                 /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice
                     val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView

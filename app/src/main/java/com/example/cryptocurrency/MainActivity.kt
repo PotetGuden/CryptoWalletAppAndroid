@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putFloat("balanceUSD", 10000F)
                 editor.apply() // commit()
                 transactionViewModel.init(this)
-                transactionViewModel.save("usd", 10000F,1F)
+                transactionViewModel.save("usd", -10000F,1F)
                 viewModel.fetchAllData()
                 updateBalance()
             } else{
@@ -102,32 +102,38 @@ class MainActivity : AppCompatActivity() {
             updateBalance()
         }
     }
-    private val transactionList = mutableListOf<Transactions>()
+
+    override fun onResume() {
+        super.onResume()
+        updateBalance()
+    }
+    //private val transactionList = mutableListOf<Transactions>()
     fun updateBalance(){
-        var balance : Float = 0.0F
+
         viewModel.fetchAllData()
 
         viewModel.transactionListLiveData.observe(this){
-            setTransactionList(it)
+            var balance = 0F
+            //setTransactionList(it)
             if(it.isEmpty()){
                 Log.d("Database", "is empty!")
                 // Kanskje legge til installation reward her?
             } else{
                 for (i in it.indices) {
-                    balance += it[i].updatedPrice*it[i].amountOfCoin
-                    Log.d(i.toString(), "${it[i].updatedPrice}*${it[i].amountOfCoin}")
+                    balance += it[i].updatedPrice*it[i].amountOfCoin *-1F
+                    //Log.d(i.toString(), "${it[i].updatedPrice}*${it[i].amountOfCoin}")
                 }
             }
-
-            val balanceText = findViewById<View>(R.id.user_balance) as TextView
-            balanceText.text = "Balance: ${balance.toString()}$"
+            binding.userBalance.text = "Balance: ${balance}$"
+            //val balanceText = findViewById<View>(R.id.user_balance) as TextView
+            //balanceText.text = "Balance: ${balance.toString()}$"
         }
     }
 
-    fun setTransactionList(list: List<Transactions>) {
+    /*fun setTransactionList(list: List<Transactions>) {
         transactionList.clear()
         transactionList.addAll(list)
-    }
+    }*/
 /*
 *  viewModel.transactionListLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)

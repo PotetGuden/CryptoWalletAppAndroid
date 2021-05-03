@@ -3,7 +3,10 @@ package com.example.cryptocurrency.details
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.Coins
@@ -11,6 +14,7 @@ import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentPortofolioItemBinding
 
 import com.example.cryptocurrency.entities.Transactions
+import com.example.cryptocurrency.list.TransactionsListViewModel
 
 
 class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewHolder>(){
@@ -21,6 +25,7 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
     private val amountOfCoinsList = mutableListOf<Float>()
     private val updatedPriceList = mutableListOf<Coins>()
 
+    //private val viewModel: TransactionsListViewModel by viewModels()
 
     class ViewHolder(val binding: FragmentPortofolioItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(coinName: String, amountOfCoin: Float, updatedPrice: String) {

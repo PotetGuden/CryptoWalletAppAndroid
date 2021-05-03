@@ -60,6 +60,7 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                     intent.putExtra("coinSymbol", it.symbol)
                     intent.putExtra("coinPrice", it.priceUsd)
                     intent.putExtra("amountOfCoins", amountOfCoins)
+                    intent.putExtra("coinId", it.id)
 
                     startActivity(intent)
                 }

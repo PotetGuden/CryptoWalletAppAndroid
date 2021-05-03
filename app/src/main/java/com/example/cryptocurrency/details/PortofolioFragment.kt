@@ -38,8 +38,8 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         binding.transactionBtn.setOnClickListener{
             fragmentManager?.beginTransaction()?.apply{
                 replace(R.id.currency_fragment_container,
-                        TransactionsListFragment(),"TransactionListFragment")
-                        .commit()
+                    TransactionsListFragment(),"TransactionListFragment")
+                    .commit()
             }
         }
 
@@ -53,42 +53,20 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         databaseTransactionViewModel.fetchNameAmountOfCoins()
 
         // CoinName sorted
-        databaseTransactionViewModel.sumAmountCoinNameListLiveData.observe(this){
+        databaseTransactionViewModel.sumAmountCoinNameListLiveData.observe(viewLifecycleOwner){
             adapter.setCoinNameList(it)
         }
         // Amount of coins per coin
-        databaseTransactionViewModel.sumAmountOfCoinsListLiveData.observe(this){
+        databaseTransactionViewModel.sumAmountOfCoinsListLiveData.observe(viewLifecycleOwner){
             adapter.setAmountOfCoinsList(it)
         }
         // Transaction List  - trenger nok ikke denne
         databaseTransactionViewModel.transactionListLiveData.observe(viewLifecycleOwner){
-           // adapter.setTransactionList(it)
+            // adapter.setTransactionList(it)
         }
 
-        apiListViewModel.allCurrencies.observe(this){ currencies ->
+        apiListViewModel.allCurrencies.observe(viewLifecycleOwner){ currencies ->
             adapter.setUpdatedPriceList(currencies.data)
         }
-
-        //viewModel.init(requireContext())
-
-        // FOR Å SENDE MEG TING?
-
-        /*viewModel.transactionLiveData.observe(this){ currencies ->
-            fragmentManager?.beginTransaction()?.apply {
-                replace(R.id.recyclerView, PortofolioItemFragment())
-                    .addToBackStack("PortofolioItemFragment")
-                    .commit()
-            }
-        }*/
-        //}
-        /*currencyListViewModel.allCurrencies.observe(this){ currencies ->
-            binding.currencyList.adapter = CurrencyListAdapter(currencies){
-                fragmentManager?.beginTransaction()?.apply{
-                    replace(R.id.currency_fragment_container, CurrencyFragment.newInstance(it))
-                            .addToBackStack("Currency")
-                            .commit()
-                }
-            }
-        }*/
     }
 }

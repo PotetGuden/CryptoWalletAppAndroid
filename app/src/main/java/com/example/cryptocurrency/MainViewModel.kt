@@ -50,12 +50,13 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    val specificCoin = MutableLiveData<SingleCoin>()
+    private val _specificCoin = MutableLiveData<SingleCoin>()
+    val specificCoin: LiveData<SingleCoin> get() = _specificCoin
     fun LoadCoinByName(coinName: String){
 
         viewModelScope.launch(Dispatchers.IO){
             val specificCurrency = cryptoService.getAssetByName(coinName)
-            specificCoin.postValue(specificCurrency)
+            _specificCoin.postValue(specificCurrency)
         }
     }
 
