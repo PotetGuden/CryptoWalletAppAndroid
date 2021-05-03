@@ -1,71 +1,38 @@
-package com.example.cryptocurrency
+package com.example.cryptocurrency.details
 
-import android.app.PendingIntent.getActivity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.TextUtils.replace
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
-import com.example.cryptocurrency.databinding.ActivityPurchaseBinding
+import com.example.cryptocurrency.MainViewModel
+import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
-import com.example.cryptocurrency.details.BuyCurrencyFragment
-import com.example.cryptocurrency.details.BuySellFragment
-import com.example.cryptocurrency.details.SellCurrencyFragment
-import com.example.cryptocurrency.details.TransactionsViewModel
+import com.example.cryptocurrency.databinding.FragmentPortofolioBinding
 import com.example.cryptocurrency.entities.Transactions
-import com.example.cryptocurrency.list.CurrencyFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
-import java.util.*
 
-class PurchaseActivity : AppCompatActivity() {
+class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
-    private lateinit var binding: ActivityPurchaseBinding
-
+    private lateinit var binding: FragmentCurrencyBinding
     override fun onResume() {
         super.onResume()
-        Log.d("Purchase Activity", "onResume")
+
+        Log.d("BuySellFragment", "onResume")
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        Log.d("Purchase Activity", "onRestart")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("Purchase Activity", "onStart")
-    }
-
-    override fun onUserInteraction() {
-        super.onUserInteraction()
-        Log.d("Purchase Activity", "onUserInteraction")
-    }
-
-    override fun onResumeFragments() {
-        super.onResumeFragments()
-        Log.d("Purchase Activity", "onResumeFragments")
-    }
-
-    override fun onPostResume() {
-        super.onPostResume()
-        Log.d("Purchase Activity", "onPostResume")
-    }
 
     private val viewModel: TransactionsListViewModel by viewModels()
     private val currencyListViewModel: MainViewModel by viewModels()
 
-    /*private fun test(imageString: String, coinSymbol: String, coinName: String, coinPrice: String, coinId: String){
+    private fun test(imageString: String, coinSymbol: String, coinName: String, coinPrice: String, coinId: String){
         currencyListViewModel.LoadCoinByName(coinId)
         var updatedPrice = coinPrice
-        currencyListViewModel.specificCoin.observe(this){
+        currencyListViewModel.specificCoin.observe(viewLifecycleOwner){
             updatedPrice = it.data.priceUsd
         }
 
@@ -78,41 +45,44 @@ class PurchaseActivity : AppCompatActivity() {
         binding.someTextIdHere2.text = coinSymbol
         binding.someTextIdHere3.text = correctPriceFormat
 
-        /*viewModel.init(this)
+        viewModel.init(requireContext())
         viewModel.fetchAmountOfCoinsByName(coinSymbol)
         // Refreshing Amount of coins
-        viewModel.sumAmountOfCoinsByNameLiveData.observe(this){ amountOfCoins ->
+        viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){ amountOfCoins ->
             val value: Float = amountOfCoins * updatedPrice.toFloat()
+            Log.d("Amount of Coins", amountOfCoins.toString())
             binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
-        }*/
-    }*/
+        }
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPurchaseBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //binding = FragmentCurrencyBinding.inflate(layoutInflater)
+        binding = FragmentCurrencyBinding.bind(view)
+        //setContentView(binding.root)
 
-        val imageString: String? = intent?.getStringExtra("imageString")
-        val coinId: String? = intent?.getStringExtra("coinId")
-        val coinSymbol: String? = intent?.getStringExtra("coinSymbol")
-        val coinName: String? = intent?.getStringExtra("coinName")
-        val coinPrice: String? = intent?.getStringExtra("coinPrice")
-        val amountOfCoins: Float = intent.getFloatExtra("amountOfCoins",0F)
+        val imageString: String? = arguments?.getString("imageString")
+        val coinId: String? = arguments?.getString("coinId")
+        val coinSymbol: String? = arguments?.getString("coinSymbol")
+        val coinName: String? = arguments?.getString("coinName")
+        val coinPrice: String? = arguments?.getString("coinPrice")
+        val amountOfCoins: Float = requireArguments().getFloat("amountOfCoins",0F)
 
         if(imageString == null || coinName == null || coinSymbol == null || coinPrice == null || coinId == null){
             showError()
         } else {
-            //test(imageString,coinSymbol,coinName,coinPrice, coinId)
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.purchase_fragment_container, BuySellFragment.newInstance(imageString,coinName,coinSymbol,coinPrice,amountOfCoins, coinId))
-                    .commit()
 
+            test(imageString,coinSymbol,coinName,coinPrice, coinId)
+            Log.d("ImageString", imageString.toString())
+            Log.d("Coin Symbol", coinSymbol.toString())
+            Log.d("Coin Name", coinName.toString())
+            Log.d("Coin Id", coinId.toString())
             /*binding.button3.setOnClickListener{
                 test(imageString,coinSymbol,coinName,coinPrice, coinId)
             }*/
 
-            /*binding.button.setOnClickListener{
-                supportFragmentManager.beginTransaction().apply{
+            binding.button.setOnClickListener{
+                parentFragmentManager.beginTransaction().apply{
                     replace(R.id.purchase_fragment_container, BuyCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins))
                         .addToBackStack("Currency")
                         .commit()
@@ -120,16 +90,16 @@ class PurchaseActivity : AppCompatActivity() {
             }
 
             binding.button2.setOnClickListener{
-                supportFragmentManager.beginTransaction().apply{
+                parentFragmentManager.beginTransaction().apply{
                     replace(R.id.purchase_fragment_container, SellCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins, coinId)) // Trenger ikke coinName for sell
                         .addToBackStack("Currency")
                         .commit()
                 }
             }
-            supportFragmentManager.addOnBackStackChangedListener {
+            parentFragmentManager.addOnBackStackChangedListener {
                 test(imageString,coinSymbol,coinName,coinPrice, coinId)
                 Log.d("PurchaseActivity", "onBackStackListener")
-            }*/
+            }
         }
     }
 
@@ -152,14 +122,24 @@ class PurchaseActivity : AppCompatActivity() {
                     Log.d(i.toString(), "${it[i].updatedPrice}*${it[i].amountOfCoin}")
                 }
             }
-
-            val balanceText = findViewById<View>(R.id.user_balance) as TextView
-            balanceText.text = "Balance: ${balance.toString()}$"
         }
     }
     fun setTransactionList(list: List<Transactions>) {
         transactionList.clear()
         transactionList.addAll(list)
     }
+    companion object { // static function - har tilgang til arguments som man sender til newInstance()
+        fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float, coinId: String?): BuySellFragment = BuySellFragment().apply{
+            arguments = Bundle().apply{
+                //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
 
+                putString("imageString", imgName)
+                putString("coinName", coinName)
+                putString("coinSymbol", coinSymbol)
+                putString("coinPrice", coinPrice)
+                putFloat("amountOfCoins", amountOfCoins)
+                putString("coinId", coinId)
+            }
+        }
+    }
 }

@@ -62,11 +62,9 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
             transactionListViewModel.sumBalance.observe(viewLifecycleOwner){    balance ->
                 balanceUSD += balance*-1F       // Convert negative value to positive, because of database structure
                 binding.balanceMessage.text = "You can only buy cryptocurrency in USD\n\nYou have ${balanceUSD} USD"
-                Log.d("BALANCE USD IN OBSERVE", balanceUSD.toString())
             }
 
-
-            binding.editText.addTextChangedListener(object : TextWatcher{
+            binding.editText.addTextChangedListener(object : TextWatcher{ // bytt til it aka fjern object
                 override fun afterTextChanged(s: Editable?) {}
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -82,8 +80,6 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                 }
             })
         }
-
-
     }
 
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
@@ -106,7 +102,6 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                 //val amountOfUSD = editText.text.toString().toFloat()
                 val amountOfCoins = editText2.text.toString().toFloat()
                 viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
-
                 parentFragmentManager.popBackStack()
                 /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice

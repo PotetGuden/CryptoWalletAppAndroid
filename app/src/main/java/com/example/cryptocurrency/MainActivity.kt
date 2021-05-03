@@ -100,6 +100,11 @@ class MainActivity : AppCompatActivity() {
         val updateBtn = findViewById<View>(R.id.update_id)
         updateBtn.setOnClickListener{
             updateBalance()
+            // BARE EN TEST
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.currency_fragment_container,
+                    CurrencyListFragment(),"yolo")
+                .commit()
         }
     }
 

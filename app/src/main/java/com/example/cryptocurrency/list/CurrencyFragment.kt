@@ -14,7 +14,7 @@ import com.example.cryptocurrency.entities.Transactions
 
 
 class CurrencyFragment : Fragment(R.layout.fragment_currency) { // fragment_currency
-
+/*
     private lateinit var binding: FragmentCurrencyBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,7 +100,7 @@ class CurrencyFragment : Fragment(R.layout.fragment_currency) { // fragment_curr
         }
     }
 
-
+*/
 
 }
 

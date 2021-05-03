@@ -43,7 +43,7 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
             binding.currencyList.adapter = CurrencyListAdapter(currencies){
                 // for onclick
                 parentFragmentManager.beginTransaction().apply{
-                    var coinName = it.symbol
+                    val coinName = it.symbol
                     var amountOfCoins = 0F
                     viewModel.transactionListLiveData.observe(viewLifecycleOwner){
                         // alle transaksjoner
@@ -53,7 +53,7 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                             }
                         }
                     }
-                    var intent = Intent(activity, PurchaseActivity::class.java)
+                    val intent = Intent(activity, PurchaseActivity::class.java)
                     val imageString = "https://static.coincap.io/assets/icons/${it.symbol.toLowerCase()}@2x.png"
                     intent.putExtra("imageString", imageString)
                     intent.putExtra("coinName", it.name)
@@ -62,9 +62,16 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                     intent.putExtra("amountOfCoins", amountOfCoins)
                     intent.putExtra("coinId", it.id)
 
+
                     startActivity(intent)
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("CURRENCY LIST FRAGMENT", "onResume()")
+
     }
 }

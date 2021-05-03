@@ -47,7 +47,9 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
             dbViewModel.init(requireContext())
             dbViewModel.fetchAmountOfCoinsByName(coinSymbol)
             // Refreshing Amount of coins
-            dbViewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){ amountOfCoins ->
+            var amountOfCoin = 0F
+            dbViewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){  amountOfCoins ->
+                amountOfCoin = amountOfCoins
                 binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
                // binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
             }
@@ -66,6 +68,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                         if(s.toString() != "") {
                             val usdAmount = s.toString().toDouble() * coinPrice.toDouble()
                             binding.editText2.text = usdAmount.toString()
+                            binding.button2.isEnabled = s.toString().toFloat() <= amountOfCoin
                             Log.d("usdAMOUNT", usdAmount.toString())
                         } else{
                             binding.editText2.text = "" // hmm

@@ -3,7 +3,10 @@ package com.example.cryptocurrency.details
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.AdapterView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptocurrency.MainViewModel
@@ -14,16 +17,42 @@ import com.example.cryptocurrency.list.TransactionsListViewModel
 
 class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
 
-    // Adapter tar seg av hva som blir printet ut i recyclerview
-    private val adapter = PortofolioItemAdapter()
     // DATABASE
     private val databaseTransactionViewModel: TransactionsListViewModel by lazy {
         ViewModelProvider(this).get(TransactionsListViewModel::class.java)
     }
+    //private val viewModel : TransactionsListViewModel by viewModels()
+
+
+    // Adapter tar seg av hva som blir printet ut i recyclerview
+    //private val adapter = PortofolioItemAdapter()
+
+    //private var balanceUsd = getUsdBalance()
+
+    private val adapter = PortofolioItemAdapter()
     // API
     private val apiListViewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
     }
+    /*private fun getUsdBalance(): Float {
+        // Sending balance as USD
+        var balance = 0F
+        viewModel.init(requireContext())
+        viewModel.fetchAllData()
+        viewModel.transactionListLiveData.observe(this){
+            balanceUsd = 0F
+            if(it.isEmpty()){
+                Log.d("Database", "is empty!")
+            } else{
+                for (i in it.indices) {
+                    balanceUsd += it[i].updatedPrice*it[i].amountOfCoin
+                }
+                //adapter.
+            }
+        }
+        Log.d("Balance USD", balance.toString())
+        return balance
+    }*/
 
     private lateinit var binding: FragmentPortofolioBinding // Portofolio forside xml
 
@@ -62,7 +91,7 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         }
         // Transaction List  - trenger nok ikke denne
         databaseTransactionViewModel.transactionListLiveData.observe(viewLifecycleOwner){
-            // adapter.setTransactionList(it)
+            adapter.setTransactionList(it)
         }
 
         apiListViewModel.allCurrencies.observe(viewLifecycleOwner){ currencies ->
