@@ -25,9 +25,6 @@ class TransactionsViewModel : ViewModel() {
 
     fun save(coinName: String, updatedPrice: Float, amountOfCoin: Float){
         viewModelScope.launch{
-            /*if(coinName.isNullOrEmpty() ){ // trenger isNan?
-                return@launch // Kan vel legge inn en melding til user her?
-            }*/
             transactionDao.insert(Transactions(coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin))
             Log.d("Save", "insert happend.")
         }

@@ -15,6 +15,9 @@ import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
 import com.example.cryptocurrency.databinding.FragmentPortofolioBinding
 import com.example.cryptocurrency.entities.Transactions
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
@@ -47,11 +50,14 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
         viewModel.init(requireContext())
         viewModel.fetchAmountOfCoinsByName(coinSymbol)
+
+        val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+        df.maximumFractionDigits = 2
         // Refreshing Amount of coins
         viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){ amountOfCoins ->
             val value: Float = amountOfCoins * updatedPrice.toFloat()
-            Log.d("Amount of Coins", amountOfCoins.toString())
-            binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
+            val amountOfCoinsFormatted = df.format(amountOfCoins)
+            binding.someTextIdHere5.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${df.format(value)} USD"
         }
     }
 

@@ -14,6 +14,7 @@ import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentPortofolioBinding
 import com.example.cryptocurrency.list.TransactionsListFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import java.util.*
 
 class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
 
@@ -65,9 +66,10 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
 
         // Transaction button onclick
         binding.transactionBtn.setOnClickListener{
-            fragmentManager?.beginTransaction()?.apply{
-                replace(R.id.currency_fragment_container,
+            parentFragmentManager.beginTransaction().apply{
+                replace(R.id.main_container,
                     TransactionsListFragment(),"TransactionListFragment")
+                    .addToBackStack("Transactions")
                     .commit()
             }
         }
@@ -80,6 +82,7 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         databaseTransactionViewModel.fetchAllData() // Trenger nok ikke denne
         databaseTransactionViewModel.fetchTotalAmountOfCoinsPerCoin()
         databaseTransactionViewModel.fetchNameAmountOfCoins()
+
 
         // CoinName sorted
         databaseTransactionViewModel.sumAmountCoinNameListLiveData.observe(viewLifecycleOwner){

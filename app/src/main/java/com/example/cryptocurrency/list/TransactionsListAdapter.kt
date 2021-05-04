@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
+import java.util.*
 
 class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.ViewHolder>(){
 
@@ -30,6 +31,7 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
 
             binding.someTextIdHere2.text = transactionInformation
             // Date time
+            binding.someTextIdHere3.text = Calendar.getInstance().time.toString()
         }
     }
 

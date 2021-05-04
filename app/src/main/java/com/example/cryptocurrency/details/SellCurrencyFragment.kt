@@ -14,6 +14,9 @@ import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
 import com.example.cryptocurrency.databinding.FragmentSellCurrencyBinding
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
     private var transactionsID: Long? = null
@@ -66,9 +69,13 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                     APIViewModel.LoadCoinByName(coinId)
                     APIViewModel.specificCoin.observe(viewLifecycleOwner){
                         if(s.toString() != "") {
-                            val usdAmount = s.toString().toDouble() * coinPrice.toDouble()
-                            binding.editText2.text = usdAmount.toString()
                             binding.button2.isEnabled = s.toString().toFloat() <= amountOfCoin
+
+                            val usdAmount = s.toString().toDouble() * coinPrice.toDouble()
+                            val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+                            df.maximumFractionDigits = 2
+
+                            binding.editText2.text = df.format(usdAmount)
                             Log.d("usdAMOUNT", usdAmount.toString())
                         } else{
                             binding.editText2.text = "" // hmm
