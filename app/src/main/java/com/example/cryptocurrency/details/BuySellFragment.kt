@@ -29,7 +29,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
     private val viewModel: TransactionsListViewModel by viewModels()
     private val currencyListViewModel: MainViewModel by viewModels()
 
-    private fun test(imageString: String, coinSymbol: String, coinName: String, coinPrice: String, coinId: String){
+    private fun updateScreen(imageString: String, coinSymbol: String, coinName: String, coinPrice: String, coinId: String){
         currencyListViewModel.LoadCoinByName(coinId)
         var updatedPrice = coinPrice
         currencyListViewModel.specificCoin.observe(viewLifecycleOwner){
@@ -72,18 +72,15 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
             showError()
         } else {
 
-            test(imageString,coinSymbol,coinName,coinPrice, coinId)
+            updateScreen(imageString,coinSymbol,coinName,coinPrice, coinId)
             Log.d("ImageString", imageString.toString())
             Log.d("Coin Symbol", coinSymbol.toString())
             Log.d("Coin Name", coinName.toString())
             Log.d("Coin Id", coinId.toString())
-            /*binding.button3.setOnClickListener{
-                test(imageString,coinSymbol,coinName,coinPrice, coinId)
-            }*/
 
             binding.button.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
-                    replace(R.id.purchase_fragment_container, BuyCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins))
+                    replace(R.id.buySellContainer, BuyCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins))
                         .addToBackStack("Currency")
                         .commit()
                 }
@@ -91,13 +88,13 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
             binding.button2.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
-                    replace(R.id.purchase_fragment_container, SellCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins, coinId)) // Trenger ikke coinName for sell
+                    replace(R.id.buySellContainer, SellCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins, coinId)) // Trenger ikke coinName for sell
                         .addToBackStack("Currency")
                         .commit()
                 }
             }
             parentFragmentManager.addOnBackStackChangedListener {
-                test(imageString,coinSymbol,coinName,coinPrice, coinId)
+                updateScreen(imageString,coinSymbol,coinName,coinPrice, coinId)
                 Log.d("PurchaseActivity", "onBackStackListener")
             }
         }
@@ -106,28 +103,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
     private fun showError() {
         Log.d("ERROR", "Errorrrr")
     }
-    private val transactionList = mutableListOf<Transactions>()
-    fun updateBalance(){
-        var balance : Float = 0.0F
-        viewModel.fetchAllData()
 
-        viewModel.transactionListLiveData.observe(this){
-            setTransactionList(it)
-            if(it.isEmpty()){
-                Log.d("Database", "is empty!")
-                // Kanskje legge til installation reward her?
-            } else{
-                for (i in it.indices) {
-                    balance += it[i].updatedPrice*it[i].amountOfCoin
-                    Log.d(i.toString(), "${it[i].updatedPrice}*${it[i].amountOfCoin}")
-                }
-            }
-        }
-    }
-    fun setTransactionList(list: List<Transactions>) {
-        transactionList.clear()
-        transactionList.addAll(list)
-    }
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
         fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float, coinId: String?): BuySellFragment = BuySellFragment().apply{
             arguments = Bundle().apply{

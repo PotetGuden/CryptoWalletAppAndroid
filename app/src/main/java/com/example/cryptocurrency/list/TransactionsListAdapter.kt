@@ -1,5 +1,6 @@
 package com.example.cryptocurrency.list
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -16,15 +17,17 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
                 binding.someImgNameHere
             )
-            /*val textview = activity!!.findViewById<View>(R.id.user_balance) as TextView
-            textview.text = "NEW BALANCE"*/
 
-            // Sold/Bought
-            binding.someTextIdHere.text = "BOUGHT"
             val amount : String = transaction.amountOfCoin.toString()
             val coinName : String = transaction.coinName
             val updatedPrice : String = transaction.updatedPrice.toString()
+
             val transactionInformation = "${amount} ${coinName} for ${updatedPrice} USD"
+
+            //binding.someTextIdHere.text = "BOUGHT"
+            binding.someTextIdHere.text = if (amount[0].toString() == "-")  "SOLD" else "BOUGHT"
+            binding.someTextIdHere.setTextColor(if (amount[0].toString() == "-")  Color.RED else Color.BLUE)
+
             binding.someTextIdHere2.text = transactionInformation
             // Date time
         }

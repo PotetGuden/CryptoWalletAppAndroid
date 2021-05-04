@@ -25,7 +25,7 @@
         android:text="0.2 x 54518.22"
         android:textColor="@color/black"
         android:textSize="14sp"
-        android:textStyle="bold"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
         app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />

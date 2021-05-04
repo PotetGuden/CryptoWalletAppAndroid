@@ -28,16 +28,9 @@ class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
         viewModel.fetchAllData()
         binding.transactionsList.layoutManager = LinearLayoutManager(requireContext())
         binding.transactionsList.adapter =  adapter //TransactionsListAdapter() // eller bare adapter
-        var balance : Float = 0.0F
 
         viewModel.transactionListLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)
-
-            for(i in it){
-                balance += i.updatedPrice * i.amountOfCoin
-            }
-            val balanceText = requireActivity().findViewById<View>(R.id.user_balance) as TextView
-            balanceText.text = "Balance: ${balance}$"
         }
     }
 }
