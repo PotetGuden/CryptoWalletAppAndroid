@@ -1,21 +1,24 @@
 package com.example.cryptocurrency
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
+import android.icu.util.TimeZone
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptocurrency.databinding.ActivityMainBinding
 import com.example.cryptocurrency.details.PortofolioFragment
 import com.example.cryptocurrency.details.TransactionsViewModel
-import com.example.cryptocurrency.entities.Transactions
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import java.time.*
+import java.time.format.DateTimeFormatter
+import java.util.*
+import java.util.Locale.setDefault
+
 
 // NOTE: Fordi man "kapper" floaten sånn at man bare får x antall siffer etter 0, så vil det egt bli litt feilmargin i balance/transaksjon (not)
 
@@ -37,8 +40,10 @@ class MainActivity : AppCompatActivity() {
         //binding.userBalance.text = newString
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.currency_fragment_container,
-                CurrencyListFragment(),"yolo")
+            .replace(
+                R.id.currency_fragment_container,
+                CurrencyListFragment(), "yolo"
+            )
             .commit()
 
         viewModel.init(this)
@@ -50,8 +55,10 @@ class MainActivity : AppCompatActivity() {
 
         binding.headerTitle.setOnClickListener{
             supportFragmentManager.beginTransaction()
-                .replace(R.id.currency_fragment_container,
-                    PortofolioFragment(), "xdd")    // Sende med noe til portofolio?
+                .add(
+                    R.id.currency_fragment_container,
+                    PortofolioFragment(), "xdd"
+                )    // Sende med noe til portofolio?
                     .addToBackStack("Portofolio")
                     .commit()
         }
@@ -81,7 +88,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putFloat("balanceUSD", 10000F)
                 editor.apply() // commit()
                 transactionViewModel.init(this)
-                transactionViewModel.save("usd", -10000F,1F)
+                transactionViewModel.save("usd", -10000F, 1F)
                 viewModel.fetchAllData()
                 updateBalance()
             } else{
@@ -102,8 +109,10 @@ class MainActivity : AppCompatActivity() {
             updateBalance()
             // BARE EN TEST
             supportFragmentManager.beginTransaction()
-                .replace(R.id.currency_fragment_container,
-                    CurrencyListFragment(),"yolo")
+                .replace(
+                    R.id.currency_fragment_container,
+                    CurrencyListFragment(), "yolo"
+                )
                 .commit()
         }
     }

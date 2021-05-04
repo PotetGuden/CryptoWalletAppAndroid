@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.util.*
 
 class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.ViewHolder>(){
@@ -19,19 +21,23 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
                 binding.someImgNameHere
             )
 
-            val amount : String = transaction.amountOfCoin.toString()
+            val amount : Float = transaction.amountOfCoin
             val coinName : String = transaction.coinName
-            val updatedPrice : String = transaction.updatedPrice.toString()
+            val updatedPrice : Float = transaction.updatedPrice
+            val dateTime : String = transaction.transactionDate
 
-            val transactionInformation = "${amount} ${coinName} for ${updatedPrice} USD"
+            val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+            df.maximumFractionDigits = 2
+            val usdValueBoughtFor = df.format(updatedPrice*amount)
+            val transactionInformation = "${amount} ${coinName} for ${usdValueBoughtFor} USD"
 
             //binding.someTextIdHere.text = "BOUGHT"
-            binding.someTextIdHere.text = if (amount[0].toString() == "-")  "SOLD" else "BOUGHT"
-            binding.someTextIdHere.setTextColor(if (amount[0].toString() == "-")  Color.RED else Color.BLUE)
+            binding.someTextIdHere.text = if (amount < 0)  "SOLD" else "BOUGHT"
+            binding.someTextIdHere.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
 
             binding.someTextIdHere2.text = transactionInformation
             // Date time
-            binding.someTextIdHere3.text = Calendar.getInstance().time.toString()
+            binding.someTextIdHere3.text = dateTime
         }
     }
 

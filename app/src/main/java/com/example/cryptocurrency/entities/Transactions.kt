@@ -14,8 +14,11 @@ data class Transactions (
     @ColumnInfo(name = "updatedPrice")
     val updatedPrice: Float,
     @ColumnInfo(name = "amountOfCoin")
-    val amountOfCoin: Float
+    val amountOfCoin: Float,
+    @ColumnInfo(name = "transactionDate")
+    val transactionDate: String
     )
+
 
 
 

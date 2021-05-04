@@ -10,6 +10,10 @@ import com.example.cryptocurrency.database.DataBase
 import com.example.cryptocurrency.database.TransactionsDAO
 import com.example.cryptocurrency.entities.Transactions
 import kotlinx.coroutines.launch
+import java.time.ZoneId
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class TransactionsViewModel : ViewModel() {
@@ -25,7 +29,15 @@ class TransactionsViewModel : ViewModel() {
 
     fun save(coinName: String, updatedPrice: Float, amountOfCoin: Float){
         viewModelScope.launch{
-            transactionDao.insert(Transactions(coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin))
+            val zoneId = ZoneId.of("Europe/Oslo")
+            val zoneDateTime: ZonedDateTime = ZonedDateTime.now(zoneId)
+            val currTime = zoneDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+            Log.d(
+                "Calendar stuff", "" +
+                        "${zoneDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n"
+
+            )
+            transactionDao.insert(Transactions(coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = currTime))
             Log.d("Save", "insert happend.")
         }
     }
@@ -35,7 +47,7 @@ class TransactionsViewModel : ViewModel() {
             if(coinName.isNullOrEmpty()){ // updatedPrice.isNullOrEmpty? isNan?
                 return@launch // Kan vel legge inn en melding til user her?
             }
-            transactionDao.update(Transactions(transactionsId = transactionsId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin))
+            transactionDao.update(Transactions(transactionsId = transactionsId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = Calendar.getInstance().time.toString()))
         }
     }
 }
