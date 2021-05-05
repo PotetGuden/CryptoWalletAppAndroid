@@ -18,7 +18,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
 
     private var transactionsID: Long? = null
     private lateinit var binding: FragmentBuyCurrencyBinding
-    private val  viewModel: TransactionsViewModel by lazy(){
+    private val viewModel: TransactionsViewModel by lazy(){
         ViewModelProvider(this).get(TransactionsViewModel::class.java)
     }
     private val transactionListViewModel: TransactionsListViewModel by viewModels()
@@ -41,7 +41,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null || coinId == null ){
 
         } else{
-            initViewListeners(coinId, coinSymbol, coinPrice)
+
             binding.button.text = "BUY"
             binding.coinSymbol.text = coinName
 
@@ -80,6 +80,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                     }
                 }
             })
+            initViewListeners(coinId, coinSymbol, coinPrice)
         }
     }
 
@@ -109,22 +110,11 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         with(binding){
             button.setOnClickListener{
                 //val amountOfUSD = editText.text.toString().toFloat()
-                val amountOfCoins = editText2.text.toString().toFloat()
-                viewModel.save(coinId, coinName, coinPrice.toFloat(), amountOfCoins)
+                //val amountOfCoins = editText2.text.toString().toFloat()
+                val currencyAmount: Float = editText.text.toString().toFloat() / coinPrice.toFloat()
+                viewModel.save(coinId, coinName, coinPrice.toFloat(), currencyAmount)
                 parentFragmentManager.popBackStack()
-                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
-                    var balance : Float = it.amountOfCoin*it.updatedPrice
-                    val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
-                    balanceText.text = balance.toString()
-                }
-
-                fragmentManager?.popBackStack()*/
-                /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
-                balanceText.text = "NEW BALANCE"*/
             }
-
-
         }
     }
-
 }

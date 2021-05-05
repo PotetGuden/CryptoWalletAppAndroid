@@ -9,21 +9,20 @@ import com.bumptech.glide.Glide
 import com.example.cryptocurrency.Coins
 import com.example.cryptocurrency.databinding.FragmentPortofolioItemBinding
 import com.example.cryptocurrency.entities.Transactions
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.absoluteValue
 
 
 class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewHolder>(){
 
     private val transactionList = mutableListOf<Transactions>()
-
     private val coinNameList = mutableListOf<String>()
     private val amountOfCoinsList = mutableListOf<Float>()
     private val updatedPriceList = mutableListOf<Coins>()
-    //private var usdBalance = Float
-
-    //private val viewModel: TransactionsListViewModel by viewModels()
 
     class ViewHolder(val binding: FragmentPortofolioItemBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(coinSymbol: String, amountOfCoin: Float, updatedPrice: String, balanceUsd: Float, coinName: String) {
@@ -39,43 +38,45 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
                 val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
                 df.maximumFractionDigits = 2
                 val usdBalance = df.format(amountOfCoin * updatedPrice.toFloat())
+                val usdBalanced = BigDecimal(amountOfCoin.toDouble() * updatedPrice.toDouble() ).setScale(2, RoundingMode.HALF_EVEN)
                 df.maximumFractionDigits = 3
-                val amountOfCoinsFormatted = df.format(amountOfCoin)
+                val amountOfCoinsFormatteds = df.format(amountOfCoin)
+
+                val amountOfCoinsFormatted = if( amountOfCoin.absoluteValue % 1.0 <= 0.01){
+                    BigDecimal(amountOfCoin.toDouble()).setScale(4, RoundingMode.HALF_EVEN)
+                } else{
+                    BigDecimal(amountOfCoin.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+                }
+
                 val imageString = "https://static.coincap.io/assets/icons/${coinSymbol.toLowerCase()}@2x.png"
 
                 Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
                 binding.someTextIdHere.text = coinName
                 binding.someTextIdHere2.text = coinSymbol
                 binding.amountOfCoinsAndSymbol.text = "$amountOfCoinsFormatted $coinSymbol"
-                binding.usdBalance.text = "$${usdBalance}"
+                binding.usdBalance.text = "$${usdBalanced}"
             }
-
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Sender med binding
-
         return ViewHolder(FragmentPortofolioItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-     //holder.binding(currencyListView.data[position] )
         var balanceUsd = 0F
-        for (i in transactionList.indices) {
-            balanceUsd += transactionList[i].updatedPrice*transactionList[i].amountOfCoin
+        for (transaction in transactionList) {
+            balanceUsd += transaction.updatedPrice * transaction.amountOfCoin
         }
-        Log.d("Coin Name List Size: ", coinNameList.size.toString())
-        //transactionList[0].coinName
-        for(i in 0..updatedPriceList.size-1){
-            if(updatedPriceList[i].symbol == coinNameList[position]){
-                holder.bind(coinNameList[position], amountOfCoinsList[position], updatedPriceList[i].priceUsd, balanceUsd, updatedPriceList[i].name)
+
+        for(currency in updatedPriceList){
+            if(currency.symbol == coinNameList[position]){
+                holder.bind(coinNameList[position], amountOfCoinsList[position], currency.priceUsd, balanceUsd, currency.name)
             } else if(coinNameList[position] == "usd"){
                 holder.bind("usd", 1F, "10000", balanceUsd * -1F, "USD")
             }
         }
-        //holder.bind(transactionList[position], coinNameList[position], amountOfCoinsList[position])
+
     }
 
     override fun getItemCount(): Int { // x antall items som skal loade

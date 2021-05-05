@@ -26,6 +26,8 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
         ViewModelProvider(this).get(TransactionsListViewModel::class.java)
     }
 
+    // currencyListViewModel . UPDATE FUNKSJON HER??=??
+
     private lateinit var binding: FragmentListBinding
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,16 +64,22 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
                     intent.putExtra("amountOfCoins", amountOfCoins)
                     intent.putExtra("coinId", it.id)
 
-
                     startActivity(intent)
                 }
             }
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.d("CurrencyListFragment", "onStart()")
+    }
+
     override fun onResume() {
         super.onResume()
-        Log.d("CURRENCY LIST FRAGMENT", "onResume()")
+        currencyListViewModel.LoadCoinFromList()
 
+        Log.d("CURRENCY LIST FRAGMENT", "onResume()")
     }
+
 }

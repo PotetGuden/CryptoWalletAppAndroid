@@ -62,8 +62,8 @@ class MainViewModel: ViewModel() {
 
     fun UpdateValue(){
         viewModelScope.launch(Dispatchers.IO){
-            val coin = cryptoService.getBitcoin()
-            bitcoin.postValue(coin)
+            val coin = cryptoService.getAllCurrencies()
+            _allCurrencies.postValue(coin)
         }
     }
 

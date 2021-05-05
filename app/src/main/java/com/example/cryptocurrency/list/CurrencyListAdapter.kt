@@ -1,34 +1,25 @@
 package com.example.cryptocurrency.list
 
-import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.AllCurrencies
 import com.example.cryptocurrency.Coins
-import com.example.cryptocurrency.MainActivity
 import com.example.cryptocurrency.MainViewModel
 import com.example.cryptocurrency.databinding.FragmentCoinInfoBinding
-import com.example.cryptocurrency.databinding.FragmentListBinding
-import kotlinx.coroutines.currentCoroutineContext
-import java.security.AccessController.getContext
-import kotlin.coroutines.coroutineContext
 
 
 // Her kan man hente inn backend info og sende med (tror jeg)
 
 // val list: List<Int>
-class CurrencyListAdapter(val currencyListView: AllCurrencies, val onClick : (Coins) -> Unit) : RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>() {
+class CurrencyListAdapter( val currencyListView: AllCurrencies, val onClick : (Coins) -> Unit) : RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: FragmentCoinInfoBinding, val onClick : (Coins) -> Unit) : RecyclerView.ViewHolder(binding.root){
         fun binding(currency: Coins) {
+            Log.d("Bind", "binding")
             val imageString = "https://static.coincap.io/assets/icons/${currency.symbol.toLowerCase()}@2x.png"
             Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
             val correctPriceFormat: String = "$" + currency.priceUsd.substring(0,currency.priceUsd.indexOf(".")+3)
@@ -56,14 +47,17 @@ class CurrencyListAdapter(val currencyListView: AllCurrencies, val onClick : (Co
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding(currencyListView.data[position] )
+        Log.d("CURRENCY LIST ADAPTER", "onBindViewHolder()")
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
+        super.onBindViewHolder(holder, position, payloads)
+        Log.d("CURRENCY LIST ADAPTER", "onBindViewHolder() PAYLOAD")
     }
 
     override fun getItemCount(): Int { // x antall items som skal loade
         return currencyListView.data.size
     }
 
-    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-        super.onAttachedToRecyclerView(recyclerView)
-        Log.d("CURRENCY LIST ADAPTER", "onAttachedToRecyclerView()")
-    }
+
 }

@@ -15,19 +15,16 @@ import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
 import com.example.cryptocurrency.databinding.FragmentPortofolioBinding
 import com.example.cryptocurrency.entities.Transactions
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
+import kotlin.math.absoluteValue
 
 class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
     private lateinit var binding: FragmentCurrencyBinding
-    override fun onResume() {
-        super.onResume()
-
-        Log.d("BuySellFragment", "onResume")
-    }
-
 
     private val viewModel: TransactionsListViewModel by viewModels()
     private val currencyListViewModel: MainViewModel by viewModels()
@@ -46,26 +43,36 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
         )
         binding.someTextIdHere.text = coinName
         binding.someTextIdHere2.text = coinSymbol
-        binding.someTextIdHere3.text = correctPriceFormat
 
+        currencyListViewModel.allCurrencies.observe(viewLifecycleOwner){
+            for(i in it.data){
+                if(i.id == coinId){
+                    val priceFormatted = BigDecimal(i.priceUsd.toDouble()).setScale(2,RoundingMode.HALF_EVEN)
+                    binding.someTextIdHere3.text = priceFormatted.toString()
+                }
+            }
+        }
         viewModel.init(requireContext())
         viewModel.fetchAmountOfCoinsByName(coinSymbol)
 
-        val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
-        df.maximumFractionDigits = 2
         // Refreshing Amount of coins
         viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){ amountOfCoins ->
+            binding.button2.isEnabled = amountOfCoins != 0F
+
             val value: Float = amountOfCoins * updatedPrice.toFloat()
-            val amountOfCoinsFormatted = df.format(amountOfCoins)
-            binding.someTextIdHere5.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${df.format(value)} USD"
+            val valueFormatted =  BigDecimal(value.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+            val amountOfCoinsFormatted = if( amountOfCoins.absoluteValue % 1.0 <= 0.01){
+                BigDecimal(amountOfCoins.toDouble()).setScale(4, RoundingMode.HALF_EVEN)    // If the amount has more then 2 zero's (0.00xx)
+            } else{
+                BigDecimal(amountOfCoins.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+            }
+            binding.someTextIdHere5.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${valueFormatted} USD"
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //binding = FragmentCurrencyBinding.inflate(layoutInflater)
         binding = FragmentCurrencyBinding.bind(view)
-        //setContentView(binding.root)
 
         val imageString: String? = arguments?.getString("imageString")
         val coinId: String? = arguments?.getString("coinId")
@@ -79,10 +86,6 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
         } else {
 
             updateScreen(imageString,coinSymbol,coinName,coinPrice, coinId)
-            Log.d("ImageString", imageString.toString())
-            Log.d("Coin Symbol", coinSymbol.toString())
-            Log.d("Coin Name", coinName.toString())
-            Log.d("Coin Id", coinId.toString())
 
             binding.button.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
@@ -100,6 +103,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
                 }
             }
             parentFragmentManager.addOnBackStackChangedListener {
+                currencyListViewModel.LoadCoinFromList()
                 updateScreen(imageString,coinSymbol,coinName,coinPrice, coinId)
                 Log.d("PurchaseActivity", "onBackStackListener")
             }
@@ -113,8 +117,6 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
         fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float, coinId: String?): BuySellFragment = BuySellFragment().apply{
             arguments = Bundle().apply{
-                //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
-
                 putString("imageString", imgName)
                 putString("coinName", coinName)
                 putString("coinSymbol", coinSymbol)
@@ -123,5 +125,11 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
                 putString("coinId", coinId)
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        //currencyListViewModel.LoadCoinFromList()
+        Log.d("BuySellFragment", "onResume")
     }
 }
