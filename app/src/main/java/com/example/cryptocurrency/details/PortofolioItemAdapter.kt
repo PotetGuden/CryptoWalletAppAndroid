@@ -3,21 +3,15 @@ package com.example.cryptocurrency.details
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.Coins
-import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentPortofolioItemBinding
-
 import com.example.cryptocurrency.entities.Transactions
-import com.example.cryptocurrency.list.TransactionsListViewModel
-import java.security.acl.Owner
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
+import java.util.*
 
 
 class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewHolder>(){
@@ -32,9 +26,9 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
     //private val viewModel: TransactionsListViewModel by viewModels()
 
     class ViewHolder(val binding: FragmentPortofolioItemBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(coinName: String, amountOfCoin: Float, updatedPrice: String, balanceUsd: Float) {
-            if(coinName == "usd"){
-                val imageString = "https://static.coincap.io/assets/icons/${coinName}@2x.png"
+        fun bind(coinSymbol: String, amountOfCoin: Float, updatedPrice: String, balanceUsd: Float, coinName: String) {
+            if(coinSymbol == "usd"){
+                val imageString = "https://static.coincap.io/assets/icons/${coinSymbol}@2x.png"
                 Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
                 binding.someTextIdHere.setTextColor(Color.GREEN)
                 binding.someTextIdHere.text = "${balanceUsd} $"
@@ -42,15 +36,18 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
 
 
             } else{
-                val imageString = "https://static.coincap.io/assets/icons/${coinName.toLowerCase()}@2x.png"
-                Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
-                val correctPriceFormat: String = updatedPrice.substring(0,updatedPrice.indexOf(".")+3)
-                //val correctPercentChangeFormat: String = currency.changePercent24Hr.substring(0,currency.changePercent24Hr.indexOf(".")+3) + "%"
+                val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+                df.maximumFractionDigits = 2
+                val usdBalance = df.format(amountOfCoin * updatedPrice.toFloat())
+                df.maximumFractionDigits = 3
+                val amountOfCoinsFormatted = df.format(amountOfCoin)
+                val imageString = "https://static.coincap.io/assets/icons/${coinSymbol.toLowerCase()}@2x.png"
 
-                binding.someTextIdHere.text = "${amountOfCoin.toString()} x ${correctPriceFormat}"
-                val sum = updatedPrice.toFloat()* amountOfCoin
-                val correctSum = sum.toString().substring(0,sum.toString().indexOf(".")+3)
-                binding.someTextIdHere2.text = "${correctSum} USD"
+                Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
+                binding.someTextIdHere.text = coinName
+                binding.someTextIdHere2.text = coinSymbol
+                binding.amountOfCoinsAndSymbol.text = "$amountOfCoinsFormatted $coinSymbol"
+                binding.usdBalance.text = "$${usdBalance}"
             }
 
         }
@@ -73,10 +70,9 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
         //transactionList[0].coinName
         for(i in 0..updatedPriceList.size-1){
             if(updatedPriceList[i].symbol == coinNameList[position]){
-                Log.d("UpdatedPriceList Symbol / coinNameList: ", updatedPriceList[i].symbol + " " + coinNameList[position])
-                holder.bind(coinNameList[position], amountOfCoinsList[position], updatedPriceList[i].priceUsd, balanceUsd)
+                holder.bind(coinNameList[position], amountOfCoinsList[position], updatedPriceList[i].priceUsd, balanceUsd, updatedPriceList[i].name)
             } else if(coinNameList[position] == "usd"){
-                holder.bind("usd", 1F, "10000", balanceUsd * -1F)
+                holder.bind("usd", 1F, "10000", balanceUsd * -1F, "USD")
             }
         }
         //holder.bind(transactionList[position], coinNameList[position], amountOfCoinsList[position])

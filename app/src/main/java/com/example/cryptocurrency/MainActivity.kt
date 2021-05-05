@@ -9,11 +9,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentTransaction
 import com.example.cryptocurrency.databinding.ActivityMainBinding
 import com.example.cryptocurrency.details.PortofolioFragment
 import com.example.cryptocurrency.details.TransactionsViewModel
 import com.example.cryptocurrency.list.CurrencyListFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
+import kotlinx.coroutines.joinAll
 import java.time.*
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -26,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreference: SharedPreferences
 
+    val apiViewModel: MainViewModel by viewModels()
     val viewModel: TransactionsListViewModel by viewModels()
     val transactionViewModel: TransactionsViewModel by viewModels()
 
@@ -50,7 +53,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.fetchAllData()
         updateBalance()
 
-
         sharedPreference = getSharedPreferences("init-transaction", Context.MODE_PRIVATE)
 
         binding.headerTitle.setOnClickListener{
@@ -62,20 +64,6 @@ class MainActivity : AppCompatActivity() {
                     .addToBackStack("Portofolio")
                     .commit()
         }
-        /*fun updateBalance(){
-            viewModel.transactionListLiveData.observe(this){
-                if(it.isEmpty()){
-                    Log.d("Database", "is empty!")
-                } else{
-                    for (i in it.indices) {
-                        balance += it[i].updatedPrice*it[i].amountOfCoin
-                    }
-                }
-
-                val balanceText = findViewById<View>(R.id.user_balance) as TextView
-                balanceText.text = "Balance: ${balance.toString()}$"
-            }
-        }*/
 
         binding.test.setOnClickListener{
             val keyValueData = sharedPreference
@@ -88,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 editor.putFloat("balanceUSD", 10000F)
                 editor.apply() // commit()
                 transactionViewModel.init(this)
-                transactionViewModel.save("usd", -10000F, 1F)
+                transactionViewModel.save("Dollar","usd", -10000F, 1F)
                 viewModel.fetchAllData()
                 updateBalance()
             } else{
@@ -122,10 +110,12 @@ class MainActivity : AppCompatActivity() {
         updateBalance()
     }
     //private val transactionList = mutableListOf<Transactions>()
+
     fun updateBalance(){
 
         viewModel.fetchAllData()
 
+        Log.d("Updated Coin Value", "${viewModel.transactionListLiveData.value}")
         viewModel.transactionListLiveData.observe(this){
             var balance = 0F
             //setTransactionList(it)
@@ -134,14 +124,40 @@ class MainActivity : AppCompatActivity() {
                 // Kanskje legge til installation reward her?
             } else{
                 for (i in it.indices) {
-                    balance += it[i].updatedPrice*it[i].amountOfCoin *-1F
-                    //Log.d(i.toString(), "${it[i].updatedPrice}*${it[i].amountOfCoin}")
+                    if(i == 0){
+                        //balance += 10000F
+                        continue
+                    }
+                    apiViewModel.LoadCoinByName(it[i].coinId)
+                    var updatedPrice = 0F
+                    apiViewModel.specificCoin.observe(this){    updatedCurrency ->
+                        if(it[i].coinId == updatedCurrency.data.id){
+                            Log.d("Updated Coin Value", "i:${i} = Coin ID: ${it[i].coinId} Updated Price = ${updatedCurrency.data.priceUsd}")
+                            //balance += it[i].amountOfCoin * updatedCurrency.data.priceUsd.toFloat() *-1F
+                            updatedPrice = updatedCurrency.data.priceUsd.toFloat()
+                        }
+                    }
+                    balance += it[i].amountOfCoin * updatedPrice *-1F
+                    //balance += it[i].updatedPrice*it[i].amountOfCoin *-1F // FUNKER ISH
+                }
+                for(i in it.indices){   // CURRENCY BALANCE
+                    if(i == 0){  // Dropping installation reward
+                        continue
+                    }
+                    apiViewModel.LoadCoinByName(it[i].coinId)
+                    apiViewModel.specificCoin.observe(this){    updatedCurrency ->
+                        if(it[i].coinId == updatedCurrency.data.id){
+                            balance += it[i].amountOfCoin * updatedCurrency.data.priceUsd.toFloat() *-1F
+                        }
+                    }
+                    //balance += it[i].updatedPrice*it[i].amountOfCoin  // FUNKER ISH
                 }
             }
-            binding.userBalance.text = "Balance: ${balance}$"
+            binding.userBalance.text = "Balance: ${balance}$ FIKS BALANCE"
             //val balanceText = findViewById<View>(R.id.user_balance) as TextView
             //balanceText.text = "Balance: ${balance.toString()}$"
         }
+
     }
 
     /*fun setTransactionList(list: List<Transactions>) {

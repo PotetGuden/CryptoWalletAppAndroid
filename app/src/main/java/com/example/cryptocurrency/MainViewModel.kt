@@ -29,7 +29,7 @@ class MainViewModel: ViewModel() {
     init {
         LoadBitcoin()
         LoadCoinFromList()
-        LoadCoinByName("cardano")
+        //LoadCoinByName("cardano")
     }
 
     val bitcoin = MutableLiveData<SingleCoin>()

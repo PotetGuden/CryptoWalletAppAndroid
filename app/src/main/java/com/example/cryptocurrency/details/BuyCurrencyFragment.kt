@@ -31,18 +31,19 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
         viewModel.init(requireContext())
 
         val imgName : String? = arguments?.getString("imgName")
+        val coinId : String? = arguments?.getString("coinId")
         val coinName : String? = arguments?.getString("coinName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
         val amountOfCoins : Float = requireArguments().getFloat("amountOfCoins")
         val correctPriceFormat: String = "$" + coinPrice?.substring(0, coinPrice.indexOf(".") + 3)
 
-        if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null ){
+        if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null || coinId == null ){
 
         } else{
-            initViewListeners(coinName, coinPrice)
+            initViewListeners(coinId, coinSymbol, coinPrice)
             binding.button.text = "BUY"
-            binding.coinSymbol.text = coinSymbol
+            binding.coinSymbol.text = coinName
 
             transactionListViewModel.init(requireContext())
             transactionListViewModel.fetchSumBalance()
@@ -85,6 +86,7 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
         fun newInstance(
             imgName: String?,
+            coinId: String?,
             coinName: String?,
             coinSymbol: String?,
             coinPrice: String?,
@@ -94,20 +96,21 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                 //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
 
                 putString("imgName", imgName)
-                putString("coinSymbol", coinName)
-                putString("coinName", coinSymbol)
+                putString("coinSymbol", coinSymbol)
+                putString("coinName", coinName)
+                putString("coinId", coinId)
                 putString("coinPrice", coinPrice)
                 putFloat("amountOfCoins", amountOfCoins)
             }
         }
     }
 
-    private fun initViewListeners(coinName: String, coinPrice: String){
+    private fun initViewListeners(coinId: String,coinName: String, coinPrice: String){
         with(binding){
             button.setOnClickListener{
                 //val amountOfUSD = editText.text.toString().toFloat()
                 val amountOfCoins = editText2.text.toString().toFloat()
-                viewModel.save(coinName, coinPrice.toFloat(), amountOfCoins)
+                viewModel.save(coinId, coinName, coinPrice.toFloat(), amountOfCoins)
                 parentFragmentManager.popBackStack()
                 /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice

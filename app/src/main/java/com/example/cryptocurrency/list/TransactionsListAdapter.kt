@@ -1,6 +1,7 @@
 package com.example.cryptocurrency.list
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -20,24 +21,32 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
                 binding.someImgNameHere
             )
-
             val amount : Float = transaction.amountOfCoin
             val coinName : String = transaction.coinName
             val updatedPrice : Float = transaction.updatedPrice
             val dateTime : String = transaction.transactionDate
+            Log.d("Coin Name = ", coinName)
 
-            val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
-            df.maximumFractionDigits = 2
-            val usdValueBoughtFor = df.format(updatedPrice*amount)
-            val transactionInformation = "${amount} ${coinName} for ${usdValueBoughtFor} USD"
+            fun getEmoji(unicode: Int): String {
+                return String(Character.toChars(unicode))
+            }
+            if(coinName == "usd"){
+                binding.someTextIdHere.text = "Installation Reward ${getEmoji(0x1F4B0)} ${getEmoji(0x1F911)}"
+                binding.someTextIdHere.setTextColor(Color.RED)
+                binding.someTextIdHere2.text = "10000 $"
+                binding.someTextIdHere2.setTextColor(Color.GREEN)
+                binding.someTextIdHere3.text = dateTime
+            } else{
+                val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
+                df.maximumFractionDigits = 2
+                val usdValueBoughtFor = df.format(updatedPrice*amount)
+                val transactionInformation = "${amount} ${coinName} for ${usdValueBoughtFor} USD"
 
-            //binding.someTextIdHere.text = "BOUGHT"
-            binding.someTextIdHere.text = if (amount < 0)  "SOLD" else "BOUGHT"
-            binding.someTextIdHere.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
-
-            binding.someTextIdHere2.text = transactionInformation
-            // Date time
-            binding.someTextIdHere3.text = dateTime
+                binding.someTextIdHere.text = if (amount < 0)  "SOLD" else "BOUGHT"
+                binding.someTextIdHere.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
+                binding.someTextIdHere2.text = transactionInformation
+                binding.someTextIdHere3.text = dateTime
+            }
         }
     }
 

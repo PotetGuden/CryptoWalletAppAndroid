@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:padding="5dp"
     android:layout_height="wrap_content">
 
@@ -25,8 +25,7 @@
         android:text="0.2 x 54518.22"
         android:textColor="@color/black"
         android:textSize="14sp"
-
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
         app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />
 
@@ -37,7 +36,29 @@
         android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:textSize="14sp"
-        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/someTextIdHere"
         app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+
+    <TextView
+        android:id="@+id/usdBalance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="$40.00"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/amountOfCoinsAndSymbol"
+        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+
+    <TextView
+        android:id="@+id/amountOfCoinsAndSymbol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="0.1 ETH"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/someTextIdHere" />
 </androidx.constraintlayout.widget.ConstraintLayout>

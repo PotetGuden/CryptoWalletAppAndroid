@@ -9,6 +9,8 @@ data class Transactions (
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "transactionsId")
     val transactionsId: Long = 0, // PK
+    @ColumnInfo(name = "coinId")
+    val coinId: String,
     @ColumnInfo(name = "coinName")
     val coinName: String,
     @ColumnInfo(name = "updatedPrice")

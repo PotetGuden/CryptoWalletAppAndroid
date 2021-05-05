@@ -36,11 +36,8 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         viewModel.init(requireContext())
 
         val imgName : String? = arguments?.getString("imgName")
-        //val coinName : String? = arguments?.getString("coinName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
-        //val amountOfCoins : Float = requireArguments().getFloat("amountOfCoins")
-        val correctPriceFormat: String = "$" + coinPrice?.substring(0,coinPrice.indexOf(".")+3)
         val coinId: String? = arguments?.getString("coinId")
 
         if(imgName == null || coinSymbol == null || coinPrice == null || coinId == null ){
@@ -57,7 +54,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                // binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
             }
 
-            initViewListeners(coinSymbol, coinPrice)
+            initViewListeners(coinId, coinSymbol, coinPrice)
             binding.button2.text = "SELL"
             binding.coinSymbol.text = coinSymbol
             //binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
@@ -93,7 +90,6 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
 
                 putString("imgName", imgName)
                 putString("coinSymbol", coinSymbol)
-                //putString("coinName", coinName)
                 putString("coinPrice", coinPrice)
                 putFloat("amountOfCoins", amountOfCoins)
                 putString("coinId", coinId)
@@ -101,12 +97,12 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         }
     }
 
-    private fun initViewListeners(coinName: String, coinPrice: String){
+    private fun initViewListeners(coinId: String, coinName: String, coinPrice: String){
         with(binding){
             button2.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat() * -1F
                 //val amountOfUsd = editText2.text.toString().toFloat()
-                viewModel.save(coinName,coinPrice.toFloat(),amountOfCoins)
+                viewModel.save(coinId, coinName, coinPrice.toFloat(), amountOfCoins)
                 parentFragmentManager.popBackStack()
                 /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
                     var balance : Float = it.amountOfCoin*it.updatedPrice

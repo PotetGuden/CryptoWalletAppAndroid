@@ -1,12 +1,9 @@
 package com.example.cryptocurrency.details
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptocurrency.MainViewModel
@@ -67,8 +64,10 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         // Transaction button onclick
         binding.transactionBtn.setOnClickListener{
             parentFragmentManager.beginTransaction().apply{
-                replace(R.id.main_container,
-                    TransactionsListFragment(),"TransactionListFragment")
+                replace(
+                    R.id.main_container,
+                    TransactionsListFragment(), "TransactionListFragment"
+                )
                     .addToBackStack("Transactions")
                     .commit()
             }

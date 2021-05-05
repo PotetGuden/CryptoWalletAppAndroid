@@ -86,7 +86,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
             binding.button.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
-                    replace(R.id.buySellContainer, BuyCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins))
+                    replace(R.id.buySellContainer, BuyCurrencyFragment.newInstance(imageString, coinId, coinName, coinSymbol, coinPrice, amountOfCoins))
                         .addToBackStack("Currency")
                         .commit()
                 }
