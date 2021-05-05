@@ -19,7 +19,7 @@
 
 
     <TextView
-        android:id="@+id/someTextIdHere"
+        android:id="@+id/coinName"
         android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,8 +40,8 @@
         android:textSize="14sp"
         android:textStyle="bold"
 
-        app:layout_constraintStart_toStartOf="@+id/someTextIdHere"
-        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+        app:layout_constraintStart_toStartOf="@+id/coinName"
+        app:layout_constraintTop_toBottomOf="@+id/coinName" />
 
     <TextView
         android:id="@+id/someTextIdHere3"

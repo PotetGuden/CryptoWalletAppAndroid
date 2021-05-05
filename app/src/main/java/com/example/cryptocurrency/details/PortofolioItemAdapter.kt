@@ -29,19 +29,14 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
             if(coinSymbol == "usd"){
                 val imageString = "https://static.coincap.io/assets/icons/${coinSymbol}@2x.png"
                 Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
-                binding.someTextIdHere.setTextColor(Color.GREEN)
-                binding.someTextIdHere.text = "${balanceUsd} $"
-                // Sending balance as USD
-
+                val balanceUsdFormatted = BigDecimal(balanceUsd.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+                binding.coinName.text = "Dollar"
+                binding.coinSymbol.text = coinName
+                binding.amountOfCoinsAndSymbol.text = "$$balanceUsdFormatted"
+                binding.usdBalance.text = ""
 
             } else{
-                val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
-                df.maximumFractionDigits = 2
-                val usdBalance = df.format(amountOfCoin * updatedPrice.toFloat())
                 val usdBalanced = BigDecimal(amountOfCoin.toDouble() * updatedPrice.toDouble() ).setScale(2, RoundingMode.HALF_EVEN)
-                df.maximumFractionDigits = 3
-                val amountOfCoinsFormatteds = df.format(amountOfCoin)
-
                 val amountOfCoinsFormatted = if( amountOfCoin.absoluteValue % 1.0 <= 0.01){
                     BigDecimal(amountOfCoin.toDouble()).setScale(4, RoundingMode.HALF_EVEN)
                 } else{
@@ -51,9 +46,9 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
                 val imageString = "https://static.coincap.io/assets/icons/${coinSymbol.toLowerCase()}@2x.png"
 
                 Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
-                binding.someTextIdHere.text = coinName
-                binding.someTextIdHere2.text = coinSymbol
-                binding.amountOfCoinsAndSymbol.text = "$amountOfCoinsFormatted $coinSymbol"
+                binding.coinName.text = coinName
+                binding.coinSymbol.text = coinSymbol
+                binding.amountOfCoinsAndSymbol.text = "$amountOfCoinsFormatted ${coinSymbol.toUpperCase()}"
                 binding.usdBalance.text = "$${usdBalanced}"
             }
         }

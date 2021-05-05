@@ -25,7 +25,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         ViewModelProvider(this).get(TransactionsViewModel::class.java)
     }
 
-    private val APIViewModel: MainViewModel by viewModels()
+    private val apiViewModel: MainViewModel by viewModels()
     private val dbViewModel: TransactionsListViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +43,6 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         if(imgName == null || coinSymbol == null || coinPrice == null || coinId == null ){
 
         } else{
-
             dbViewModel.init(requireContext())
             dbViewModel.fetchAmountOfCoinsByName(coinSymbol)
             // Refreshing Amount of coins
@@ -51,11 +50,10 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
             dbViewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){  amountOfCoins ->
                 amountOfCoin = amountOfCoins
                 binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
-               // binding.someTextIdHere5.text = "You have ${amountOfCoins} ${coinSymbol}\n${amountOfCoins} x ${correctPriceFormat}\nValue ${value} USD"
             }
 
             initViewListeners(coinId, coinSymbol, coinPrice)
-            binding.button2.text = "SELL"
+            binding.sellButton.text = "SELL"
             binding.coinSymbol.text = coinSymbol
             //binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
             //binding.someTextIdHere4.text = correctPercentChangeFormat*/
@@ -63,10 +61,10 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                 override fun afterTextChanged(s: Editable?) {}
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    APIViewModel.LoadCoinByName(coinId)
-                    APIViewModel.specificCoin.observe(viewLifecycleOwner){
+                    apiViewModel.LoadCoinByName(coinId)
+                    apiViewModel.specificCoin.observe(viewLifecycleOwner){
                         if(s.toString() != "") {
-                            binding.button2.isEnabled = s.toString().toFloat() <= amountOfCoin
+                            binding.sellButton.isEnabled = s.toString().toFloat() <= amountOfCoin
 
                             val usdAmount = s.toString().toDouble() * coinPrice.toDouble()
                             val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
@@ -86,8 +84,6 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
     companion object { // static function - har tilgang til arguments som man sender til newInstance()
         fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float, coinId: String?): SellCurrencyFragment = SellCurrencyFragment().apply{
             arguments = Bundle().apply{
-                //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
-
                 putString("imgName", imgName)
                 putString("coinSymbol", coinSymbol)
                 putString("coinPrice", coinPrice)
@@ -99,23 +95,12 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
 
     private fun initViewListeners(coinId: String, coinName: String, coinPrice: String){
         with(binding){
-            button2.setOnClickListener{
+            sellButton.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat() * -1F
                 //val amountOfUsd = editText2.text.toString().toFloat()
                 viewModel.save(coinId, coinName, coinPrice.toFloat(), amountOfCoins)
                 parentFragmentManager.popBackStack()
-                /*viewModel.transactionLiveData.observe(viewLifecycleOwner){
-                    var balance : Float = it.amountOfCoin*it.updatedPrice
-                    val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
-                    balanceText.text = balance.toString()
-                }
-
-                fragmentManager?.popBackStack()*/
-                /*val balanceText = activity!!.findViewById<View>(R.id.user_balance) as TextView
-                balanceText.text = "NEW BALANCE"*/
             }
-
-
         }
     }
 }

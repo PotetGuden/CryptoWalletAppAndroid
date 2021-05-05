@@ -17,8 +17,6 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 
 
-// NOTE: Fordi man "kapper" floaten sånn at man bare får x antall siffer etter 0, så vil det egt bli litt feilmargin i balance/transaksjon (not)
-
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreference: SharedPreferences
@@ -27,16 +25,11 @@ class MainActivity : AppCompatActivity() {
     val viewModel: TransactionsListViewModel by viewModels()
     val transactionViewModel: TransactionsViewModel by viewModels()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-        //setContentView(R.layout.activity_main)
         setContentView(binding.root)
         supportActionBar?.hide()
-
-        //binding.userBalance.text = newString
 
         supportFragmentManager.beginTransaction()
             .replace(
@@ -46,14 +39,11 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         viewModel.init(this)
-        viewModel.fetchAllData()
-        //updateBalance()
 
         sharedPreference = getSharedPreferences("init-transaction", Context.MODE_PRIVATE)
         val keyValueData = sharedPreference
             .getString("key_data", "null")
         if(keyValueData == "null"){
-            Toast.makeText(this, keyValueData, Toast.LENGTH_SHORT).show()
             val editor = sharedPreference.edit()
             editor.putString("key_data", "Well everything is fine..")
             editor.putBoolean("KEY_TRUE_FALSE_CHECK", true)
@@ -75,45 +65,6 @@ class MainActivity : AppCompatActivity() {
                     .addToBackStack("Portofolio")
                     .commit()
         }
-
-        binding.test.setOnClickListener{
-            val keyValueData = sharedPreference
-                .getString("key_data", "null")
-            if(keyValueData == "null"){
-                Toast.makeText(this, keyValueData, Toast.LENGTH_SHORT).show()
-                val editor = sharedPreference.edit()
-                editor.putString("key_data", "Well everything is fine..")
-                editor.putBoolean("KEY_TRUE_FALSE_CHECK", true)
-                editor.putFloat("balanceUSD", 10000F)
-                editor.apply() // commit()
-                transactionViewModel.init(this)
-                transactionViewModel.save("Dollar","usd", -10000F, 1F)
-                viewModel.fetchAllData()
-                updateBalance()
-            } else{
-                Toast.makeText(this, "first time login", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        val deleteBtn = findViewById<View>(R.id.delete_id)
-        deleteBtn.setOnClickListener{
-            viewModel.deleteData()
-            // Delete
-            sharedPreference.edit().remove("key_data").apply()
-            sharedPreference.edit().clear().apply()
-        }
-
-        val updateBtn = findViewById<View>(R.id.update_id)
-        updateBtn.setOnClickListener{
-            // BARE EN TEST
-            supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.currency_fragment_container,
-                    CurrencyListFragment(), "yolo"
-                )
-                .commit()
-            updateBalance()
-        }
     }
 
     override fun onResume() {
@@ -122,10 +73,9 @@ class MainActivity : AppCompatActivity() {
         Log.d("Updated Coin Value", "ON RESUME MAIN ACTIVITY")
     }
 
-    //private val transactionList = mutableListOf<Transactions>()
-    //private val updatedCurrencyList = mutableListOf<Coins>()
     // TODO FJERN ALLE INDICES MED FOREACH
     fun updateBalance(){
+        viewModel.fetchAllData() // hmm
         viewModel.transactionListLiveData.observe(this){    transactionList ->
             apiViewModel.LoadCoinFromList()
             apiViewModel.allCurrencies.observe(this){   allCurrencies ->
@@ -152,33 +102,4 @@ class MainActivity : AppCompatActivity() {
         super.onUserInteraction()
         updateBalance()
     }
-    /*fun setTransactionList(list: List<Transactions>) {
-        transactionList.clear()
-        transactionList.addAll(list)
-    }
-    fun setUpdatedCurrencyList(list: List<Coins>) {
-        updatedCurrencyList.clear()
-        updatedCurrencyList.addAll(list)
-
-    }*/
-
-/*
-*  viewModel.transactionListLiveData.observe(viewLifecycleOwner){
-            adapter.setTransactionList(it)
-
-            for(i in it){
-                balance += i.updatedPrice * i.amountOfCoin
-            }
-            val balanceText = requireActivity().findViewById<View>(R.id.user_balance) as TextView
-            balanceText.text = "Balance: ${balance}$"
-        }
-*
-* */
-
-    //supportActionBar?.hide()
-    /*Handler().postDelayed({
-        val intent = Intent(this@MainActivity, HomeActivity::class.java)
-        startActivity(intent) // Sender oss til neste skjerm
-        finish()    // Gjør at vi ikke kan trykke tilbake knappen for å komme til splash screen igjen
-    }, 1000)*/
 }

@@ -39,16 +39,16 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
         val correctPriceFormat: String = "$" + updatedPrice.substring(0, coinPrice.indexOf(".") + 3)
 
         Glide.with(this).load(imageString).into(
-            binding.someImgNameHere
+            binding.imageId
         )
-        binding.someTextIdHere.text = coinName
-        binding.someTextIdHere2.text = coinSymbol
+        binding.coinName.text = coinName
+        binding.coinSymbol.text = coinSymbol
 
         currencyListViewModel.allCurrencies.observe(viewLifecycleOwner){
             for(i in it.data){
                 if(i.id == coinId){
                     val priceFormatted = BigDecimal(i.priceUsd.toDouble()).setScale(2,RoundingMode.HALF_EVEN)
-                    binding.someTextIdHere3.text = priceFormatted.toString()
+                    binding.updatedPrice.text = "$${priceFormatted.toString()}"
                 }
             }
         }
@@ -57,7 +57,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
         // Refreshing Amount of coins
         viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){ amountOfCoins ->
-            binding.button2.isEnabled = amountOfCoins != 0F
+            binding.sellButton.isEnabled = amountOfCoins != 0F
 
             val value: Float = amountOfCoins * updatedPrice.toFloat()
             val valueFormatted =  BigDecimal(value.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
@@ -66,7 +66,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
             } else{
                 BigDecimal(amountOfCoins.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
             }
-            binding.someTextIdHere5.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${valueFormatted} USD"
+            binding.balanceMessage.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${valueFormatted} USD"
         }
     }
 
@@ -87,7 +87,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
 
             updateScreen(imageString,coinSymbol,coinName,coinPrice, coinId)
 
-            binding.button.setOnClickListener{
+            binding.buyButton.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
                     replace(R.id.buySellContainer, BuyCurrencyFragment.newInstance(imageString, coinId, coinName, coinSymbol, coinPrice, amountOfCoins))
                         .addToBackStack("Currency")
@@ -95,7 +95,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
                 }
             }
 
-            binding.button2.setOnClickListener{
+            binding.sellButton.setOnClickListener{
                 parentFragmentManager.beginTransaction().apply{
                     replace(R.id.buySellContainer, SellCurrencyFragment.newInstance(imageString,coinName,coinSymbol,coinPrice, amountOfCoins, coinId)) // Trenger ikke coinName for sell
                         .addToBackStack("Currency")

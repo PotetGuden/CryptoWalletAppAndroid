@@ -10,7 +10,7 @@
     android:background="@color/white"
     >
         <ImageView
-            android:id="@+id/someImgNameHere"
+            android:id="@+id/currencyImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="2dp"
@@ -20,7 +20,7 @@
 
 
         <TextView
-            android:id="@+id/someTextIdHere"
+            android:id="@+id/coinName"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,22 +28,22 @@
             android:text="Bitcoin"
             android:textSize="14sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
-            app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />
+            app:layout_constraintStart_toEndOf="@+id/currencyImage"
+            app:layout_constraintTop_toTopOf="@+id/currencyImage" />
 
         <TextView
-            android:id="@+id/someTextIdHere2"
+            android:id="@+id/coinSymbol"
             android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="BTC"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/someImgNameHere"
-            app:layout_constraintStart_toEndOf="@+id/someImgNameHere" />
+            app:layout_constraintBottom_toBottomOf="@+id/currencyImage"
+            app:layout_constraintStart_toEndOf="@+id/currencyImage" />
 
     <TextView
-        android:id="@+id/someTextIdHere3"
+        android:id="@+id/usdBalance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
@@ -52,11 +52,11 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/someTextIdHere4"
+        app:layout_constraintEnd_toStartOf="@+id/percentage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/someTextIdHere4"
+        android:id="@+id/percentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

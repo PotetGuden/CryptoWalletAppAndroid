@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.AllCurrencies
 import com.example.cryptocurrency.Coins
-import com.example.cryptocurrency.MainViewModel
 import com.example.cryptocurrency.databinding.FragmentCoinInfoBinding
 
 
@@ -21,17 +20,17 @@ class CurrencyListAdapter( val currencyListView: AllCurrencies, val onClick : (C
         fun binding(currency: Coins) {
             Log.d("Bind", "binding")
             val imageString = "https://static.coincap.io/assets/icons/${currency.symbol.toLowerCase()}@2x.png"
-            Glide.with(this.itemView).load(imageString).into(binding.someImgNameHere)
+            Glide.with(this.itemView).load(imageString).into(binding.currencyImage)
             val correctPriceFormat: String = "$" + currency.priceUsd.substring(0,currency.priceUsd.indexOf(".")+3)
             val correctPercentChangeFormat: String = currency.changePercent24Hr.substring(0,currency.changePercent24Hr.indexOf(".")+3) + "%"
-            binding.someTextIdHere.text = currency.name
-            binding.someTextIdHere2.text = currency.symbol
-            binding.someTextIdHere3.text = correctPriceFormat
-            binding.someTextIdHere4.text = correctPercentChangeFormat
+            binding.coinName.text = currency.name
+            binding.coinSymbol.text = currency.symbol
+            binding.usdBalance.text = correctPriceFormat
+            binding.percentage.text = correctPercentChangeFormat
             if(currency.changePercent24Hr[0] == '-'){
-                binding.someTextIdHere4.setTextColor(Color.RED) // finn ut hvordan jeg får det fra drawable
+                binding.percentage.setTextColor(Color.RED) // finn ut hvordan jeg får det fra drawable
             } else{
-                binding.someTextIdHere4.setTextColor(Color.GREEN)
+                binding.percentage.setTextColor(Color.GREEN)
             }
             binding.root.setOnClickListener{
                 onClick(currency)

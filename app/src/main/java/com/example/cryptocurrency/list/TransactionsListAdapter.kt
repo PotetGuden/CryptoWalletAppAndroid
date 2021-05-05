@@ -31,8 +31,8 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
                 return String(Character.toChars(unicode))
             }
             if(coinName == "usd"){
-                binding.someTextIdHere.text = "Installation Reward ${getEmoji(0x1F4B0)} ${getEmoji(0x1F911)}"
-                binding.someTextIdHere.setTextColor(Color.RED)
+                binding.coinName.text = "Installation Reward ${getEmoji(0x1F4B0)} ${getEmoji(0x1F911)}"
+                binding.coinName.setTextColor(Color.RED)
                 binding.someTextIdHere2.text = "10000 $"
                 binding.someTextIdHere2.setTextColor(Color.GREEN)
                 binding.someTextIdHere3.text = dateTime
@@ -42,8 +42,8 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
                 val usdValueBoughtFor = df.format(updatedPrice*amount)
                 val transactionInformation = "${amount} ${coinName} for ${usdValueBoughtFor} USD"
 
-                binding.someTextIdHere.text = if (amount < 0)  "SOLD" else "BOUGHT"
-                binding.someTextIdHere.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
+                binding.coinName.text = if (amount < 0)  "SOLD" else "BOUGHT"
+                binding.coinName.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
                 binding.someTextIdHere2.text = transactionInformation
                 binding.someTextIdHere3.text = dateTime
             }

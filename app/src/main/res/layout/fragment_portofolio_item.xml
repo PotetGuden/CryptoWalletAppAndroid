@@ -17,27 +17,27 @@
 
 
     <TextView
-        android:id="@+id/someTextIdHere"
+        android:id="@+id/coinName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="10dp"
         android:text="0.2 x 54518.22"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
-        app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/someTextIdHere2"
+        android:id="@+id/coinSymbol"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/black"
         android:textSize="14sp"
-        app:layout_constraintStart_toStartOf="@+id/someTextIdHere"
-        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+        android:text="asd"
+        app:layout_constraintStart_toStartOf="@+id/coinName"
+        app:layout_constraintTop_toBottomOf="@+id/coinName" />
 
     <TextView
         android:id="@+id/usdBalance"
@@ -48,7 +48,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@+id/amountOfCoinsAndSymbol"
-        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere" />
+        app:layout_constraintTop_toBottomOf="@+id/coinName" />
 
     <TextView
         android:id="@+id/amountOfCoinsAndSymbol"
@@ -60,5 +60,5 @@
         android:text="0.1 ETH"
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/someTextIdHere" />
+        app:layout_constraintTop_toTopOf="@+id/coinName" />
 </androidx.constraintlayout.widget.ConstraintLayout>
