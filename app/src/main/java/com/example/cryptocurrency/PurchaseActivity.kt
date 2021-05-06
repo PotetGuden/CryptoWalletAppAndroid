@@ -1,29 +1,15 @@
 package com.example.cryptocurrency
 
-import android.app.PendingIntent.getActivity
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.TextUtils.replace
 import android.util.Log
-import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.ActivityPurchaseBinding
-import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
-import com.example.cryptocurrency.details.BuyCurrencyFragment
 import com.example.cryptocurrency.details.BuySellFragment
-import com.example.cryptocurrency.details.SellCurrencyFragment
-import com.example.cryptocurrency.details.TransactionsViewModel
-import com.example.cryptocurrency.entities.Transactions
-import com.example.cryptocurrency.list.CurrencyFragment
 import com.example.cryptocurrency.list.TransactionsListViewModel
-import java.util.*
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class PurchaseActivity : AppCompatActivity() {
 
@@ -36,6 +22,7 @@ class PurchaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPurchaseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        supportActionBar?.hide()
 
         val imageString: String? = intent?.getStringExtra("imageString")
         val coinId: String? = intent?.getStringExtra("coinId")
@@ -48,8 +35,26 @@ class PurchaseActivity : AppCompatActivity() {
             showError()
         } else {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.purchase_fragment_container, BuySellFragment.newInstance(imageString,coinName,coinSymbol,coinPrice,amountOfCoins, coinId))
+                .replace(R.id.purchase_fragment_container, BuySellFragment.newInstance(coinName, coinSymbol, coinPrice, coinId))
                 .commit()
+
+            Glide.with(this).load(imageString).into(
+                binding.imageId
+            )
+            binding.coinName.text = coinName
+            binding.coinSymbol.text = coinSymbol
+
+            currencyListViewModel.allCurrencies.observe(this){
+                for(i in it.data){
+                    if(i.id == coinId){
+                        val priceFormatted = BigDecimal(i.priceUsd.toDouble()).setScale(
+                            2,
+                            RoundingMode.HALF_EVEN
+                        )
+                        binding.updatedPrice.text = "$${priceFormatted}"
+                    }
+                }
+            }
         }
     }
 
@@ -60,7 +65,7 @@ class PurchaseActivity : AppCompatActivity() {
     override fun onUserInteraction() {
         super.onUserInteraction()
         Log.d("Purchase Activity", "onUserInteraction")
-        currencyListViewModel.LoadCoinFromList()
+        //currencyListViewModel.LoadCoinFromList()
     }
 
     override fun onResume() {

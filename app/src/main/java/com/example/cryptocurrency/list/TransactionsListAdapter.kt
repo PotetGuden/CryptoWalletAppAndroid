@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
+import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -21,15 +22,11 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
                 binding.someImgNameHere
             )
-            val amount : Float = transaction.amountOfCoin
+            var amountOfCoins : Float = transaction.amountOfCoin
             val coinName : String = transaction.coinName
             val updatedPrice : Float = transaction.updatedPrice
             val dateTime : String = transaction.transactionDate
-            Log.d("Coin Name = ", coinName)
 
-            fun getEmoji(unicode: Int): String {
-                return String(Character.toChars(unicode))
-            }
             if(coinName == "usd"){
                 binding.coinName.text = "Installation Reward ${getEmoji(0x1F4B0)} ${getEmoji(0x1F911)}"
                 binding.coinName.setTextColor(Color.RED)
@@ -39,14 +36,28 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
             } else{
                 val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
                 df.maximumFractionDigits = 2
-                val usdValueBoughtFor = df.format(updatedPrice*amount)
-                val transactionInformation = "${amount} ${coinName} for ${usdValueBoughtFor} USD"
+                var usdValue : String = ""
 
-                binding.coinName.text = if (amount < 0)  "SOLD" else "BOUGHT"
-                binding.coinName.setTextColor(if (amount < 0)  Color.RED else Color.BLUE)
+                if (amountOfCoins < 0){
+                    amountOfCoins *= -1F  // So the printed values will be positive
+                    binding.coinName.text = "SOLD"
+                    binding.coinName.setTextColor(Color.RED)
+                    usdValue = df.format(updatedPrice * amountOfCoins)
+                } else {
+                    binding.coinName.text = "BOUGHT"
+                    binding.coinName.setTextColor(Color.BLUE)
+                    usdValue = df.format(updatedPrice * amountOfCoins)
+                }
+
+                val transactionInformation = "${amountOfCoins} ${coinName} for ${usdValue} USD"
                 binding.someTextIdHere2.text = transactionInformation
+                binding.someTextIdHere2.setTextColor(Color.BLACK)
                 binding.someTextIdHere3.text = dateTime
             }
+        }
+
+        fun getEmoji(unicode: Int): String {
+            return String(Character.toChars(unicode))
         }
     }
 

@@ -62,7 +62,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
 
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"      // la til disse og ned
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-moshi:2.9.0"   // retrofit støtter HTTP REQUESTS GET/POST etc
 
     // Moshi
@@ -87,5 +87,6 @@ dependencies {
     implementation "androidx.room:room-ktx:2.2.6"
     // Desugar
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.9'
-
+    // AnyChart
+    implementation 'com.github.AnyChart:AnyChart-Android:1.1.2'
 }

@@ -14,4 +14,7 @@ interface CryptoCurrency {
     @GET("assets")
     suspend fun getAllCurrencies(): AllCurrencies
 
+    @GET("assets/{currencyId}/history?interval=d1")
+    suspend fun getChartById(@Path("currencyId") currencyId: String): AllChartData
+
 }

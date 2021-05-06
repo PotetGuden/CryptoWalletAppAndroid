@@ -8,7 +8,6 @@ data class AllCurrencies(
     val data: List<Coins>
     )
 
-//@JsonClass(generateAdapter = true)
 data class Coins(
     val id: String,
     val rank: String,
@@ -24,6 +23,15 @@ data class Coins(
 data class SingleCoin(
     val data: Coins
     )
+
+data class AllChartData(
+    val data: List<SingleChart>
+)
+data class SingleChart(
+    val priceUsd: String,
+    val time: String,
+    val date: String
+)
 
 
 

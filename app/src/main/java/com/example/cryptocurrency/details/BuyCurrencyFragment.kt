@@ -3,7 +3,10 @@ package com.example.cryptocurrency.details
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import android.widget.Toast
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -30,18 +33,14 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
 
         viewModel.init(requireContext())
 
-        val imgName : String? = arguments?.getString("imgName")
         val coinId : String? = arguments?.getString("coinId")
         val coinName : String? = arguments?.getString("coinName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
-        val amountOfCoins : Float = requireArguments().getFloat("amountOfCoins")
-        val correctPriceFormat: String = "$" + coinPrice?.substring(0, coinPrice.indexOf(".") + 3)
 
-        if(imgName == null || coinName == null || coinSymbol == null || coinPrice == null || coinId == null ){
-
+        if(coinName == null || coinSymbol == null || coinPrice == null || coinId == null ){
+            // Show some error if wanted
         } else{
-
             binding.button.text = "BUY"
             binding.coinSymbol.text = coinName
 
@@ -57,63 +56,39 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
             val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
             df.maximumFractionDigits = 4
 
-            binding.editText.addTextChangedListener(object :
-                TextWatcher { // bytt til it aka fjern object
-                override fun afterTextChanged(s: Editable?) {}
-                override fun beforeTextChanged(
-                    s: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
+            binding.editText.addTextChangedListener{
+                if (it.toString() != "") {
+                    // Uncomment below to disable buy button if amount entered is higher than your usd balance (instead of making the toast)
+                    // binding.button.isEnabled = s.toString().toFloat() <= balanceUSD
+                    val currencyAmount: Float = it.toString().toFloat() / coinPrice.toFloat()
+                    binding.editText2.text = df.format(currencyAmount)
+                } else {
+                    binding.editText2.text = ""  // Remove existing values
                 }
+            }
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    if (s.toString() != "") {
-                        binding.button.isEnabled = s.toString().toFloat() <= balanceUSD
-
-                        val currencyAmount: Float = s.toString().toFloat() / coinPrice.toFloat()
-
-                        binding.editText2.text = df.format(currencyAmount)
-                    } else {
-                        binding.editText2.text = ""
-                    }
+            binding.button.setOnClickListener{
+                val currencyAmount: Float = binding.editText.text.toString().toFloat() / coinPrice.toFloat()
+                val purchaseAmount = binding.editText.text.toString().toFloat()
+                if(purchaseAmount > balanceUSD){
+                    parentFragmentManager.popBackStack()
+                    Toast.makeText(this.context, "You dont have enough money", Toast.LENGTH_LONG).show()
+                    Log.d("ONCLICK", "NOT ENOUGH MONEY")
+                } else{
+                    viewModel.save(coinId, coinSymbol, coinPrice.toFloat(), currencyAmount)
+                    parentFragmentManager.popBackStack()
                 }
-            })
-            initViewListeners(coinId, coinSymbol, coinPrice)
-        }
-    }
-
-    companion object { // static function - har tilgang til arguments som man sender til newInstance()
-        fun newInstance(
-            imgName: String?,
-            coinId: String?,
-            coinName: String?,
-            coinSymbol: String?,
-            coinPrice: String?,
-            amountOfCoins: Float
-        ): BuyCurrencyFragment = BuyCurrencyFragment().apply{
-            arguments = Bundle().apply{
-                //val imageString = "https://static.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png"
-
-                putString("imgName", imgName)
-                putString("coinSymbol", coinSymbol)
-                putString("coinName", coinName)
-                putString("coinId", coinId)
-                putString("coinPrice", coinPrice)
-                putFloat("amountOfCoins", amountOfCoins)
             }
         }
     }
 
-    private fun initViewListeners(coinId: String,coinName: String, coinPrice: String){
-        with(binding){
-            button.setOnClickListener{
-                //val amountOfUSD = editText.text.toString().toFloat()
-                //val amountOfCoins = editText2.text.toString().toFloat()
-                val currencyAmount: Float = editText.text.toString().toFloat() / coinPrice.toFloat()
-                viewModel.save(coinId, coinName, coinPrice.toFloat(), currencyAmount)
-                parentFragmentManager.popBackStack()
+    companion object {
+        fun newInstance(coinId: String?, coinName: String?, coinSymbol: String?, coinPrice: String?): BuyCurrencyFragment = BuyCurrencyFragment().apply{
+            arguments = Bundle().apply{
+                putString("coinSymbol", coinSymbol)
+                putString("coinName", coinName)
+                putString("coinId", coinId)
+                putString("coinPrice", coinPrice)
             }
         }
     }

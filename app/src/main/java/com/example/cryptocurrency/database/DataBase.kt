@@ -17,7 +17,7 @@ abstract class DataBase : RoomDatabase(){
 
         var db : DataBase? = null
 
-        fun getDatabase(context: Context) : DataBase{ // Burde kanskje ha threadlocking her sånn at ikke 2 tråder kan opprette på samme tidspunkt
+        fun getDatabase(context: Context) : DataBase{ // Should maybe have threadlocking here?
 
             val newDB = db?: Room.databaseBuilder(context,
                 DataBase::class.java, DATABASE_NAME).build()

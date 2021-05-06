@@ -20,9 +20,6 @@ class TransactionsViewModel : ViewModel() {
 
     private lateinit var transactionDao: TransactionsDAO
 
-    private val _transactionLiveData: MutableLiveData<Transactions> = MutableLiveData()
-    val transactionLiveData: LiveData<Transactions> = _transactionLiveData
-
     fun init(context: Context){
         transactionDao = DataBase.getDatabase(context).getTransactionDAO()
     }
@@ -32,22 +29,17 @@ class TransactionsViewModel : ViewModel() {
             val zoneId = ZoneId.of("Europe/Oslo")
             val zoneDateTime: ZonedDateTime = ZonedDateTime.now(zoneId)
             val currTime = zoneDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
-            Log.d(
-                "Calendar stuff", "" +
-                        "${zoneDateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n"
 
-            )
             transactionDao.insert(Transactions(coinId = coinId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = currTime))
-            Log.d("Save", "insert happend.")
         }
     }
 
-    fun update(transactionsId: Long,coinId: String, coinName: String?, updatedPrice: Float, amountOfCoin: Float){
+    /*fun update(transactionsId: Long,coinId: String, coinName: String?, updatedPrice: Float, amountOfCoin: Float){
         viewModelScope.launch{
             if(coinName.isNullOrEmpty()){ // updatedPrice.isNullOrEmpty? isNan?
                 return@launch // Kan vel legge inn en melding til user her?
             }
             transactionDao.update(Transactions(transactionsId = transactionsId,coinId = coinId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = Calendar.getInstance().time.toString()))
         }
-    }
+    }*/
 }

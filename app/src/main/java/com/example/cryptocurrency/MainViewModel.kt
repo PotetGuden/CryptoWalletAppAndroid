@@ -1,6 +1,5 @@
 package com.example.cryptocurrency
 
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,7 +28,6 @@ class MainViewModel: ViewModel() {
     init {
         LoadBitcoin()
         LoadCoinFromList()
-        //LoadCoinByName("cardano")
     }
 
     val bitcoin = MutableLiveData<SingleCoin>()
@@ -60,6 +58,14 @@ class MainViewModel: ViewModel() {
         }
     }
 
+    private val _specificChart = MutableLiveData<AllChartData>()
+    val specificChart: LiveData<AllChartData> get() = _specificChart
+    fun LoadChartById(currencyId: String){
+        viewModelScope.launch(Dispatchers.IO){
+            val specificChart = cryptoService.getChartById(currencyId)
+            _specificChart.postValue(specificChart)
+        }
+    }
     fun UpdateValue(){
         viewModelScope.launch(Dispatchers.IO){
             val coin = cryptoService.getAllCurrencies()

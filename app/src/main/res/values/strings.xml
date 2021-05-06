@@ -3,4 +3,6 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="balance_string">Balance: 10,000$</string>
+    <string name="sell">Sell</string>
+    <string name="buy">Buy</string>
 </resources>

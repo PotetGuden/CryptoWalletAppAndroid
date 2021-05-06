@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentTransactionsListBinding
+import com.example.cryptocurrency.entities.Transactions
 
 
-class TransactionsListFragment : Fragment(R.layout.fragment_transactions_list) {
+class TransactionsListFragment() : Fragment(R.layout.fragment_transactions_list) {
 
     private val adapter = TransactionsListAdapter()
 

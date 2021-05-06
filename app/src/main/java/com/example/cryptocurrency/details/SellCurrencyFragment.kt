@@ -19,14 +19,13 @@ import java.text.DecimalFormatSymbols
 import java.util.*
 
 class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
-    private var transactionsID: Long? = null
     private lateinit var binding: FragmentSellCurrencyBinding
-    private val viewModel: TransactionsViewModel by lazy(){
-        ViewModelProvider(this).get(TransactionsViewModel::class.java)
-    }
+    private val viewModel: TransactionsViewModel by viewModels()
 
     private val apiViewModel: MainViewModel by viewModels()
     private val dbViewModel: TransactionsListViewModel by viewModels()
+
+    private var transactionsID: Long? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,13 +34,12 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
 
         viewModel.init(requireContext())
 
-        val imgName : String? = arguments?.getString("imgName")
         val coinSymbol : String? = arguments?.getString("coinSymbol")
         val coinPrice : String? = arguments?.getString("coinPrice")
         val coinId: String? = arguments?.getString("coinId")
 
-        if(imgName == null || coinSymbol == null || coinPrice == null || coinId == null ){
-
+        if( coinSymbol == null || coinPrice == null || coinId == null ){
+            // Show some error if wanted
         } else{
             dbViewModel.init(requireContext())
             dbViewModel.fetchAmountOfCoinsByName(coinSymbol)
@@ -55,8 +53,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
             initViewListeners(coinId, coinSymbol, coinPrice)
             binding.sellButton.text = "SELL"
             binding.coinSymbol.text = coinSymbol
-            //binding.balanceMessage.text = "You can only sell cryptocurrency in USD\n\nYou have ${amountOfCoins} ${coinSymbol}"
-            //binding.someTextIdHere4.text = correctPercentChangeFormat*/
+
             binding.editText.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable?) {}
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -81,13 +78,11 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         }
     }
 
-    companion object { // static function - har tilgang til arguments som man sender til newInstance()
-        fun newInstance(imgName: String?, coinName: String?, coinSymbol: String?, coinPrice: String?, amountOfCoins: Float, coinId: String?): SellCurrencyFragment = SellCurrencyFragment().apply{
+    companion object {
+        fun newInstance(coinSymbol: String?, coinPrice: String?, coinId: String?): SellCurrencyFragment = SellCurrencyFragment().apply{
             arguments = Bundle().apply{
-                putString("imgName", imgName)
                 putString("coinSymbol", coinSymbol)
                 putString("coinPrice", coinPrice)
-                putFloat("amountOfCoins", amountOfCoins)
                 putString("coinId", coinId)
             }
         }
@@ -97,7 +92,6 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         with(binding){
             sellButton.setOnClickListener{
                 val amountOfCoins = editText.text.toString().toFloat() * -1F
-                //val amountOfUsd = editText2.text.toString().toFloat()
                 viewModel.save(coinId, coinName, coinPrice.toFloat(), amountOfCoins)
                 parentFragmentManager.popBackStack()
             }

@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreference: SharedPreferences
 
-    val apiViewModel: MainViewModel by viewModels()
-    val viewModel: TransactionsListViewModel by viewModels()
-    val transactionViewModel: TransactionsViewModel by viewModels()
+    private val apiViewModel: MainViewModel by viewModels()
+    private val viewModel: TransactionsListViewModel by viewModels()
+    private val transactionViewModel: TransactionsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,12 +46,10 @@ class MainActivity : AppCompatActivity() {
         if(keyValueData == "null"){
             val editor = sharedPreference.edit()
             editor.putString("key_data", "Well everything is fine..")
-            editor.putBoolean("KEY_TRUE_FALSE_CHECK", true)
-            editor.putFloat("balanceUSD", 10000F)
             editor.apply() // commit()
             transactionViewModel.init(this)
             transactionViewModel.save("Dollar","usd", -10000F, 1F)
-            viewModel.fetchAllData()
+            //viewModel.fetchAllData()
             updateBalance()
             Toast.makeText(this, "You got $10.000 as a Installation Reward!", Toast.LENGTH_SHORT).show()
         }
@@ -61,7 +59,7 @@ class MainActivity : AppCompatActivity() {
                 .add(
                     R.id.currency_fragment_container,
                     PortofolioFragment(), "xdd"
-                )    // Sende med noe til portofolio?
+                )
                     .addToBackStack("Portofolio")
                     .commit()
         }
@@ -73,8 +71,7 @@ class MainActivity : AppCompatActivity() {
         Log.d("Updated Coin Value", "ON RESUME MAIN ACTIVITY")
     }
 
-    // TODO FJERN ALLE INDICES MED FOREACH
-    fun updateBalance(){
+    private fun updateBalance(){
         viewModel.fetchAllData() // hmm
         viewModel.transactionListLiveData.observe(this){    transactionList ->
             apiViewModel.LoadCoinFromList()
@@ -96,10 +93,5 @@ class MainActivity : AppCompatActivity() {
                 binding.userBalance.text = "Balance: ${accountBalance}$"
             }
         }
-    }
-
-    override fun onUserInteraction() {
-        super.onUserInteraction()
-        updateBalance()
     }
 }
