@@ -34,24 +34,22 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(
                 R.id.currency_fragment_container,
-                CurrencyListFragment(), "yolo"
+                CurrencyListFragment(), "CurrencyList"
             )
             .commit()
 
         viewModel.init(this)
 
         sharedPreference = getSharedPreferences("init-transaction", Context.MODE_PRIVATE)
-        val keyValueData = sharedPreference
-            .getString("key_data", "null")
-        if(keyValueData == "null"){
+        val keyValueData = sharedPreference.getBoolean("firstTimeLoggingIn", true)
+
+        if(keyValueData){
             val editor = sharedPreference.edit()
-            editor.putString("key_data", "Well everything is fine..")
-            editor.apply() // commit()
+            editor.putBoolean("firstTimeLoggingIn", false)
+            editor.apply()
             transactionViewModel.init(this)
             transactionViewModel.save("Dollar","usd", -10000F, 1F)
-            //viewModel.fetchAllData()
             updateBalance()
-            Toast.makeText(this, "You got $10.000 as a Installation Reward!", Toast.LENGTH_SHORT).show()
         }
 
         binding.headerTitle.setOnClickListener{

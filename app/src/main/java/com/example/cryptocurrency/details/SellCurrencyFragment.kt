@@ -5,13 +5,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import com.example.cryptocurrency.MainViewModel
 import com.example.cryptocurrency.R
-import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
 import com.example.cryptocurrency.databinding.FragmentSellCurrencyBinding
 import com.example.cryptocurrency.list.TransactionsListViewModel
 import java.text.DecimalFormat
