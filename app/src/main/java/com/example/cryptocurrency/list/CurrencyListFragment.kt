@@ -4,22 +4,21 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.example.cryptocurrency.MainActivity
-import com.example.cryptocurrency.MainViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import com.example.cryptocurrency.PurchaseActivity
 import com.example.cryptocurrency.R
+import com.example.cryptocurrency.adapters.CurrencyListAdapter
 import com.example.cryptocurrency.databinding.FragmentListBinding
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
 
 
 class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
 
-    private val currencyListViewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private val currencyListViewModel: ApiViewModel by lazy {
+        ViewModelProvider(this).get(ApiViewModel::class.java)
     }
 
     private val viewModel: TransactionsListViewModel by lazy {

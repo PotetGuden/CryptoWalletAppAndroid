@@ -1,4 +1,4 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.adapters
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import com.bumptech.glide.Glide
 import com.example.cryptocurrency.Coins
 import com.example.cryptocurrency.databinding.FragmentPortofolioItemBinding
 import com.example.cryptocurrency.entities.GroupedSumAndNameTransaction
-import com.example.cryptocurrency.entities.Transactions
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.absoluteValue

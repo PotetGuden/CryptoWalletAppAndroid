@@ -1,14 +1,12 @@
-package com.example.cryptocurrency.list
+package com.example.cryptocurrency.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.FragmentTransactionBinding
 import com.example.cryptocurrency.entities.Transactions
-import java.math.BigDecimal
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

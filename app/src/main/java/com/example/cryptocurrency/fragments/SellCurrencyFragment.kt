@@ -1,4 +1,4 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.fragments
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,10 +7,11 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.cryptocurrency.MainViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentSellCurrencyBinding
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsViewModel
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*
@@ -19,7 +20,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
     private lateinit var binding: FragmentSellCurrencyBinding
     private val viewModel: TransactionsViewModel by viewModels()
 
-    private val apiViewModel: MainViewModel by viewModels()
+    private val apiViewModel: ApiViewModel by viewModels()
     private val dbViewModel: TransactionsListViewModel by viewModels()
 
     private var transactionsID: Long? = null

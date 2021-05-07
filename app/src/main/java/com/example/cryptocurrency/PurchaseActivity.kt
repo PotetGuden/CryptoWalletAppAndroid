@@ -6,8 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.cryptocurrency.databinding.ActivityPurchaseBinding
-import com.example.cryptocurrency.details.BuySellFragment
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.fragments.BuySellFragment
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -16,7 +17,7 @@ class PurchaseActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPurchaseBinding
 
     private val viewModel: TransactionsListViewModel by viewModels()
-    private val currencyListViewModel: MainViewModel by viewModels()
+    private val currencyListViewModel: ApiViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

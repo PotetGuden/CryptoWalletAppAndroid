@@ -1,7 +1,6 @@
-package com.example.cryptocurrency.list
+package com.example.cryptocurrency.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView

@@ -1,21 +1,21 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cryptocurrency.MainViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import com.example.cryptocurrency.R
+import com.example.cryptocurrency.adapters.PortofolioItemAdapter
 import com.example.cryptocurrency.databinding.FragmentPortofolioBinding
 import com.example.cryptocurrency.list.TransactionsListFragment
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
 
 class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
 
     private val databaseTransactionViewModel: TransactionsListViewModel by viewModels()
-    private val apiListViewModel: MainViewModel by viewModels()
+    private val apiListViewModel: ApiViewModel by viewModels()
 
     private val adapter = PortofolioItemAdapter()
 

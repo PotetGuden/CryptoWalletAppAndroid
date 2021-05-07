@@ -1,9 +1,6 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.fragments
 
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -12,7 +9,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentBuyCurrencyBinding
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsViewModel
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.util.*

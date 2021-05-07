@@ -1,4 +1,4 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.viewModels
 
 import android.content.Context
 import android.util.Log
@@ -33,13 +33,4 @@ class TransactionsViewModel : ViewModel() {
             transactionDao.insert(Transactions(coinId = coinId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = currTime))
         }
     }
-
-    /*fun update(transactionsId: Long,coinId: String, coinName: String?, updatedPrice: Float, amountOfCoin: Float){
-        viewModelScope.launch{
-            if(coinName.isNullOrEmpty()){ // updatedPrice.isNullOrEmpty? isNan?
-                return@launch // Kan vel legge inn en melding til user her?
-            }
-            transactionDao.update(Transactions(transactionsId = transactionsId,coinId = coinId, coinName = coinName, updatedPrice = updatedPrice, amountOfCoin = amountOfCoin, transactionDate = Calendar.getInstance().time.toString()))
-        }
-    }*/
 }

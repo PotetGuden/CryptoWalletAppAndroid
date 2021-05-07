@@ -1,41 +1,22 @@
-package com.example.cryptocurrency
+package com.example.cryptocurrency.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cryptocurrency.API
+import com.example.cryptocurrency.AllChartData
+import com.example.cryptocurrency.AllCurrencies
+import com.example.cryptocurrency.SingleCoin
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MainViewModel: ViewModel() {
-    // annet navn?
+class ApiViewModel: ViewModel() {
     val cryptoService = API.cryptoService
 
-    private val _totalCurrencies = MutableLiveData<Int>()
-    val totalCurrencies: LiveData<Int> get() = _totalCurrencies // LiveData er immutable (kan ikke endres)
-
-    private val _error = MutableLiveData<Unit>() // Evt boolean
-    val error = MutableLiveData<Boolean>()
-
-    private val exceptionHandler = CoroutineExceptionHandler { _, _-> // kan bruke _ for å ignorere values
-        _error.postValue(Unit) // Evt true
-    }
-
-    private val _allCurrencies2 = MutableLiveData<AllCurrencies>()
-    val allCurrencies2: LiveData<AllCurrencies> get() = _allCurrencies2
-
     init {
-        LoadBitcoin()
         LoadCoinFromList()
-    }
-
-    val bitcoin = MutableLiveData<SingleCoin>()
-    fun LoadBitcoin(){
-        viewModelScope.launch(Dispatchers.IO + exceptionHandler){  //Coroutines
-            val coin = cryptoService.getBitcoin()
-            bitcoin.postValue(coin)
-        }
     }
 
     private val _allCurrencies = MutableLiveData<AllCurrencies>()
@@ -43,7 +24,6 @@ class MainViewModel: ViewModel() {
     fun LoadCoinFromList(){
         viewModelScope.launch(Dispatchers.IO){
             val currencies = cryptoService.getAllCurrencies()
-            _totalCurrencies.postValue(currencies.data.lastIndex) // Sender med siste index i arrayet
             _allCurrencies.postValue(currencies)
         }
     }
@@ -51,7 +31,6 @@ class MainViewModel: ViewModel() {
     private val _specificCoin = MutableLiveData<SingleCoin>()
     val specificCoin: LiveData<SingleCoin> get() = _specificCoin
     fun LoadCoinByName(coinName: String){
-
         viewModelScope.launch(Dispatchers.IO){
             val specificCurrency = cryptoService.getAssetByName(coinName)
             _specificCoin.postValue(specificCurrency)
@@ -66,12 +45,4 @@ class MainViewModel: ViewModel() {
             _specificChart.postValue(specificChart)
         }
     }
-    fun UpdateValue(){
-        viewModelScope.launch(Dispatchers.IO){
-            val coin = cryptoService.getAllCurrencies()
-            _allCurrencies.postValue(coin)
-        }
-    }
-
-
 }

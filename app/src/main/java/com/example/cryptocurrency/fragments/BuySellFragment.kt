@@ -1,4 +1,4 @@
-package com.example.cryptocurrency.details
+package com.example.cryptocurrency.fragments
 
 
 import android.os.Bundle
@@ -17,10 +17,10 @@ import com.anychart.core.cartesian.series.Line
 import com.anychart.data.Mapping
 import com.anychart.enums.Anchor
 import com.anychart.enums.TooltipPositionMode
-import com.example.cryptocurrency.MainViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import com.example.cryptocurrency.R
 import com.example.cryptocurrency.databinding.FragmentCurrencyBinding
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 import kotlin.math.absoluteValue
@@ -31,7 +31,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
     private lateinit var binding: FragmentCurrencyBinding
 
     private val viewModel: TransactionsListViewModel by viewModels()
-    private val currencyListViewModel: MainViewModel by viewModels()
+    private val currencyListViewModel: ApiViewModel by viewModels()
 
     private fun updateScreen(){
         val coinId: String? = arguments?.getString("coinId")

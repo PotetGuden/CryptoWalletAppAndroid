@@ -1,4 +1,4 @@
-package com.example.cryptocurrency.list
+package com.example.cryptocurrency.viewModels
 
 import android.content.Context
 import androidx.lifecycle.LiveData

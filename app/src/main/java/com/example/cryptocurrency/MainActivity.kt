@@ -4,15 +4,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cryptocurrency.databinding.ActivityMainBinding
-import com.example.cryptocurrency.details.PortofolioFragment
-import com.example.cryptocurrency.details.TransactionsViewModel
+import com.example.cryptocurrency.fragments.PortofolioFragment
+import com.example.cryptocurrency.viewModels.TransactionsViewModel
 import com.example.cryptocurrency.list.CurrencyListFragment
-import com.example.cryptocurrency.list.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.TransactionsListViewModel
+import com.example.cryptocurrency.viewModels.ApiViewModel
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -21,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPreference: SharedPreferences
 
-    private val apiViewModel: MainViewModel by viewModels()
+    private val apiViewModel: ApiViewModel by viewModels()
     private val viewModel: TransactionsListViewModel by viewModels()
     private val transactionViewModel: TransactionsViewModel by viewModels()
 
