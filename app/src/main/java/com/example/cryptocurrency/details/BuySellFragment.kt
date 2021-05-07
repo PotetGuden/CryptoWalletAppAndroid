@@ -42,13 +42,12 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
             showError()
         } else {
             currencyListViewModel.LoadCoinByName(coinId)
-            var updatedPrice = coinPrice
+            var updatedPrice : String = coinPrice
 
-            currencyListViewModel.specificCoin.observe(viewLifecycleOwner) {
-                updatedPrice = it.data.priceUsd
-            }
 
-            val correctPriceFormat: String = "$" + updatedPrice!!.substring(0, coinPrice.indexOf(".") + 3)  // BIG DECIMAL
+
+            //val correctPriceFormat: String = "$" + updatedPrice!!.substring(0, coinPrice.indexOf(".") + 3)  // BIG DECIMAL
+
             viewModel.init(requireContext())
 
             viewModel.fetchSumBalance()
@@ -60,15 +59,20 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
             viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner) { amountOfCoins ->
                 binding.sellButton.isEnabled = amountOfCoins != 0F
 
-                val value: Float = amountOfCoins * updatedPrice!!.toFloat()
-                val valueFormatted = BigDecimal(value.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+                currencyListViewModel.specificCoin.observe(viewLifecycleOwner) {
+                    updatedPrice = it.data.priceUsd
+                    val correctPriceFormat = BigDecimal(updatedPrice.toDouble()).setScale(2,RoundingMode.HALF_EVEN)
 
-                val amountOfCoinsFormatted = if (amountOfCoins.absoluteValue % 1.0 <= 0.01) {
-                    BigDecimal(amountOfCoins.toDouble()).setScale(4, RoundingMode.HALF_EVEN) // If the amount has more then 2 zero's (0.00xx)
-                } else {
-                    BigDecimal(amountOfCoins.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+                    val value: Float = amountOfCoins * updatedPrice.toFloat()
+                    val valueFormatted = BigDecimal(value.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+
+                    val amountOfCoinsFormatted = if (amountOfCoins.absoluteValue % 1.0 <= 0.01) {
+                        BigDecimal(amountOfCoins.toDouble()).setScale(4, RoundingMode.HALF_EVEN) // If the amount has more then 2 zero's (0.00xx)
+                    } else {
+                        BigDecimal(amountOfCoins.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
+                    }
+                    binding.balanceMessage.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${valueFormatted} USD"
                 }
-                binding.balanceMessage.text = "You have ${amountOfCoinsFormatted} ${coinSymbol}\n${amountOfCoinsFormatted} x ${correctPriceFormat}\nValue ${valueFormatted} USD"
             }
         }
     }
@@ -192,6 +196,7 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
         super.onResume()
         currencyListViewModel.LoadCoinFromList()
         updateScreen()
+
         Log.d("BuySellFragment", "onResume")
     }
 }

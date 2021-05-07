@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptocurrency.database.DataBase
 import com.example.cryptocurrency.database.TransactionsDAO
+import com.example.cryptocurrency.entities.GroupedSumAndNameTransaction
 import com.example.cryptocurrency.entities.Transactions
 import kotlinx.coroutines.launch
 
@@ -15,8 +16,8 @@ class TransactionsListViewModel : ViewModel() {
     private val _transactionListLiveData : MutableLiveData<List<Transactions>> = MutableLiveData()
     val transactionListLiveData : LiveData<List<Transactions>> = _transactionListLiveData
 
-    private val _transactionListGroupedLiveData : MutableLiveData<List<Transactions>> = MutableLiveData()
-    val transactionListGroupedLiveData : LiveData<List<Transactions>> = _transactionListGroupedLiveData
+    private val _transactionListGroupedLiveData : MutableLiveData<List<GroupedSumAndNameTransaction>> = MutableLiveData()
+    val transactionListGroupedLiveData : LiveData<List<GroupedSumAndNameTransaction>> = _transactionListGroupedLiveData
 
     private val _sumAmountOfCoinsByNameLiveData : MutableLiveData<Float> = MutableLiveData()
     val sumAmountOfCoinsByNameLiveData : LiveData<Float> = _sumAmountOfCoinsByNameLiveData

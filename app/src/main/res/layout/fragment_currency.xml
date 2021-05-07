@@ -40,7 +40,6 @@
                     android:id="@+id/balanceMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="You have 0.001 BTC\n0.01 x 54044\nValue 540,44 USD"
                     android:textColor="@color/black"
                     android:textSize="18sp"
 

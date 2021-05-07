@@ -29,7 +29,7 @@ class PurchaseActivity : AppCompatActivity() {
         val coinSymbol: String? = intent?.getStringExtra("coinSymbol")
         val coinName: String? = intent?.getStringExtra("coinName")
         val coinPrice: String? = intent?.getStringExtra("coinPrice")
-        val amountOfCoins: Float = intent.getFloatExtra("amountOfCoins",0F)
+
 
         if(imageString == null || coinName == null || coinSymbol == null || coinPrice == null || coinId == null){
             showError()
@@ -55,21 +55,18 @@ class PurchaseActivity : AppCompatActivity() {
                     }
                 }
             }
+            supportFragmentManager.addOnBackStackChangedListener{
+                currencyListViewModel.LoadCoinFromList()
+            }
         }
     }
 
     private fun showError() {
-        Log.d("ERROR", "Errorrrr")
-    }
-
-    override fun onUserInteraction() {
-        super.onUserInteraction()
-        Log.d("Purchase Activity", "onUserInteraction")
-        //currencyListViewModel.LoadCoinFromList()
+        Log.d("ERROR", "Some error message")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("Purchase Activity", "onResume")
+        currencyListViewModel.LoadCoinFromList()
     }
 }

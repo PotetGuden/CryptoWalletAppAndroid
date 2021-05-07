@@ -11,14 +11,10 @@ import com.example.cryptocurrency.Coins
 import com.example.cryptocurrency.databinding.FragmentCoinInfoBinding
 
 
-// Her kan man hente inn backend info og sende med (tror jeg)
-
-// val list: List<Int>
 class CurrencyListAdapter( val currencyListView: AllCurrencies, val onClick : (Coins) -> Unit) : RecyclerView.Adapter<CurrencyListAdapter.ViewHolder>() {
 
     class ViewHolder(val binding: FragmentCoinInfoBinding, val onClick : (Coins) -> Unit) : RecyclerView.ViewHolder(binding.root){
         fun binding(currency: Coins) {
-            Log.d("Bind", "binding")
             val imageString = "https://static.coincap.io/assets/icons/${currency.symbol.toLowerCase()}@2x.png"
             Glide.with(this.itemView).load(imageString).into(binding.currencyImage)
             val correctPriceFormat: String = "$" + currency.priceUsd.substring(0,currency.priceUsd.indexOf(".")+3)
@@ -35,9 +31,7 @@ class CurrencyListAdapter( val currencyListView: AllCurrencies, val onClick : (C
             binding.root.setOnClickListener{
                 onClick(currency)
             }
-            //CurrencyFragment.newInstance(imgName, coinSymbol, coinName, coinPrice)
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,12 +40,6 @@ class CurrencyListAdapter( val currencyListView: AllCurrencies, val onClick : (C
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding(currencyListView.data[position] )
-        Log.d("CURRENCY LIST ADAPTER", "onBindViewHolder()")
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
-        super.onBindViewHolder(holder, position, payloads)
-        Log.d("CURRENCY LIST ADAPTER", "onBindViewHolder() PAYLOAD")
     }
 
     override fun getItemCount(): Int { // x antall items som skal loade

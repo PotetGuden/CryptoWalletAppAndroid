@@ -10,7 +10,7 @@ data class Transactions (
     @ColumnInfo(name = "transactionsId")
     val transactionsId: Long = 0, // PK
     @ColumnInfo(name = "coinId")
-    val coinId: String,
+    val coinId: String, // nullable?
     @ColumnInfo(name = "coinName")
     val coinName: String,
     @ColumnInfo(name = "updatedPrice")
@@ -20,6 +20,13 @@ data class Transactions (
     @ColumnInfo(name = "transactionDate")
     val transactionDate: String
     )
+
+data class GroupedSumAndNameTransaction(
+    var sumAmountCoins: Float,
+    var coinName: String,
+    var balanceUsd: Float,
+    var amountOfCoin: Float
+)
 
 
 

@@ -1,6 +1,7 @@
 package com.example.cryptocurrency.database
 
 import androidx.room.*
+import com.example.cryptocurrency.entities.GroupedSumAndNameTransaction
 import com.example.cryptocurrency.entities.Transactions
 
 @Dao
@@ -23,11 +24,9 @@ interface TransactionsDAO{
     @Query("SELECT SUM(amountOfCoin*updatedPrice) FROM transactions_table")
     suspend fun fetchSumBalance() : Float?
 
-    @Query("SELECT * FROM transactions_table GROUP BY coinName;")
-    suspend fun fetchTransactionsGrouped() : List<Transactions>
+    @Query("SELECT SUM(amountOfCoin) AS sumAmountCoins, coinName AS coinName, SUM(amountOfCoin*updatedPrice) AS balanceUsd, amountOfCoin AS amountOfCoin FROM transactions_table GROUP BY coinName;")
+    suspend fun fetchTransactionsGrouped() : List<GroupedSumAndNameTransaction>
 
-    //@Query("SELECT * FROM transactions_table WHERE transactionsId = :id")
-    //suspend fun fetchDataWithId(id: Long) : Transactions
 
     @Query("DELETE FROM transactions_table")
     suspend fun deleteAll()

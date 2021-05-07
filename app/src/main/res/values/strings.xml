@@ -5,4 +5,8 @@
     <string name="balance_string">Balance: 10,000$</string>
     <string name="sell">Sell</string>
     <string name="buy">Buy</string>
+    <string name="usd">USD</string>
+    <string name="portofolio_currency_point_convertion_information">You total current points are the sum of current value of all of your currencies in USD.</string>
+    <string name="my_portofolio">My Portofolio</string>
+    <string name="transactions">Transactions</string>
 </resources>

@@ -20,7 +20,7 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
     class ViewHolder(val binding: FragmentTransactionBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(transaction: Transactions) {
             Glide.with(this.itemView).load("https://static.coincap.io/assets/icons/${transaction.coinName.toLowerCase()}@2x.png").into(
-                binding.someImgNameHere
+                binding.imageId
             )
             var amountOfCoins : Float = transaction.amountOfCoin
             val coinName : String = transaction.coinName
@@ -30,9 +30,9 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
             if(coinName == "usd"){
                 binding.coinName.text = "Installation Reward ${getEmoji(0x1F4B0)} ${getEmoji(0x1F911)}"
                 binding.coinName.setTextColor(Color.RED)
-                binding.someTextIdHere2.text = "10000 $"
-                binding.someTextIdHere2.setTextColor(Color.GREEN)
-                binding.someTextIdHere3.text = dateTime
+                binding.transactionInformation.text = "10000 $"
+                binding.transactionInformation.setTextColor(Color.GREEN)
+                binding.dateTime.text = dateTime
             } else{
                 val df = DecimalFormat("0", DecimalFormatSymbols.getInstance(Locale.ENGLISH))
                 df.maximumFractionDigits = 2
@@ -50,9 +50,9 @@ class TransactionsListAdapter() : RecyclerView.Adapter<TransactionsListAdapter.V
                 }
 
                 val transactionInformation = "${amountOfCoins} ${coinName} for ${usdValue} USD"
-                binding.someTextIdHere2.text = transactionInformation
-                binding.someTextIdHere2.setTextColor(Color.BLACK)
-                binding.someTextIdHere3.text = dateTime
+                binding.transactionInformation.text = transactionInformation
+                binding.transactionInformation.setTextColor(Color.BLACK)
+                binding.dateTime.text = dateTime
             }
         }
 

@@ -73,7 +73,6 @@ class BuyCurrencyFragment : Fragment(R.layout.fragment_buy_currency){
                 if(purchaseAmount > balanceUSD){
                     parentFragmentManager.popBackStack()
                     Toast.makeText(this.context, "You dont have enough money", Toast.LENGTH_LONG).show()
-                    Log.d("ONCLICK", "NOT ENOUGH MONEY")
                 } else{
                     viewModel.save(coinId, coinSymbol, coinPrice.toFloat(), currencyAmount)
                     parentFragmentManager.popBackStack()

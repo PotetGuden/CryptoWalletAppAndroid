@@ -40,7 +40,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
         } else{
             dbViewModel.init(requireContext())
             dbViewModel.fetchAmountOfCoinsByName(coinSymbol)
-            // Refreshing Amount of coins
+
             var amountOfCoin = 0F
             dbViewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner){  amountOfCoins ->
                 amountOfCoin = amountOfCoins
@@ -67,7 +67,7 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                             binding.editText2.text = df.format(usdAmount)
                             Log.d("usdAMOUNT", usdAmount.toString())
                         } else{
-                            binding.editText2.text = "" // hmm
+                            binding.editText2.text = ""
                         }
                     }
                 }

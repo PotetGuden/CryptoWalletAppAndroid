@@ -9,7 +9,7 @@
     android:background="@color/white"
     >
     <ImageView
-        android:id="@+id/someImgNameHere"
+        android:id="@+id/imageId"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:padding="2dp"
@@ -24,37 +24,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Sold"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/someImgNameHere"
-        app:layout_constraintTop_toTopOf="@+id/someImgNameHere" />
+        app:layout_constraintStart_toEndOf="@+id/imageId"
+        app:layout_constraintTop_toTopOf="@+id/imageId" />
 
     <TextView
-        android:id="@+id/someTextIdHere2"
+        android:id="@+id/transactionInformation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
-        android:text="0.001 BTC for 54.00 USD"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-
         app:layout_constraintStart_toStartOf="@+id/coinName"
         app:layout_constraintTop_toBottomOf="@+id/coinName" />
 
     <TextView
-        android:id="@+id/someTextIdHere3"
+        android:id="@+id/dateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="60dp"
-        android:text="Date Time"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/someTextIdHere4"
-        app:layout_constraintStart_toStartOf="@+id/someTextIdHere2"
-        app:layout_constraintTop_toBottomOf="@+id/someTextIdHere2" />
+        app:layout_constraintStart_toStartOf="@+id/transactionInformation"
+        app:layout_constraintTop_toBottomOf="@+id/transactionInformation" />
 
 
 

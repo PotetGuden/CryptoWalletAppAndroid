@@ -45,6 +45,7 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         databaseTransactionViewModel.transactionListGroupedLiveData.observe(viewLifecycleOwner){
             adapter.setTransactionList(it)
         }
+
         apiListViewModel.LoadCoinFromList()
         apiListViewModel.allCurrencies.observe(viewLifecycleOwner){ currencies ->
             adapter.setUpdatedPriceList(currencies.data)
@@ -55,7 +56,5 @@ class PortofolioFragment : Fragment(R.layout.fragment_portofolio){
         super.onResume()
         apiListViewModel.LoadCoinFromList()
         databaseTransactionViewModel.fetchTransactionsGrouped()
-
-        Log.d("PortoFolioFragment", "onResume()")
     }
 }
