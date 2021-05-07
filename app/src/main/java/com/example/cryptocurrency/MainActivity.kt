@@ -65,7 +65,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateBalance()
-        Log.d("Updated Coin Value", "ON RESUME MAIN ACTIVITY")
     }
 
     private fun updateBalance(){

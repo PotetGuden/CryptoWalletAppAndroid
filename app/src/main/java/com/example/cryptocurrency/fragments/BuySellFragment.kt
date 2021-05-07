@@ -42,18 +42,13 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
             showError()
         } else {
             currencyListViewModel.LoadCoinByName(coinId)
-            var updatedPrice : String = coinPrice
-
-
-
-            //val correctPriceFormat: String = "$" + updatedPrice!!.substring(0, coinPrice.indexOf(".") + 3)  // BIG DECIMAL
-
             viewModel.init(requireContext())
-
             viewModel.fetchSumBalance()
             viewModel.sumBalance.observe(viewLifecycleOwner){
                 binding.buyButton.isEnabled = it <= 0F
             }
+
+            var updatedPrice : String = coinPrice
 
             viewModel.fetchAmountOfCoinsByName(coinSymbol)
             viewModel.sumAmountOfCoinsByNameLiveData.observe(viewLifecycleOwner) { amountOfCoins ->
@@ -196,7 +191,5 @@ class BuySellFragment() : Fragment(R.layout.fragment_currency){
         super.onResume()
         currencyListViewModel.LoadCoinFromList()
         updateScreen()
-
-        Log.d("BuySellFragment", "onResume")
     }
 }

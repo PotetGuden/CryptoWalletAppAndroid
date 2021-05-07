@@ -68,16 +68,9 @@ class CurrencyListFragment() : Fragment(R.layout.fragment_list) {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Log.d("CurrencyListFragment", "onStart()")
-    }
-
     override fun onResume() {
         super.onResume()
         currencyListViewModel.LoadCoinFromList()
-
-        Log.d("CURRENCY LIST FRAGMENT", "onResume()")
     }
 
 }

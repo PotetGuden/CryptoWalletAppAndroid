@@ -66,7 +66,6 @@ class SellCurrencyFragment : Fragment(R.layout.fragment_sell_currency) {
                             df.maximumFractionDigits = 2
 
                             binding.editText2.text = df.format(usdAmount)
-                            Log.d("usdAMOUNT", usdAmount.toString())
                         } else{
                             binding.editText2.text = ""
                         }

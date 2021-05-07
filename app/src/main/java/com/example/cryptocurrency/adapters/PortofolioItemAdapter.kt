@@ -26,9 +26,7 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
                 val balanceUsdFormatted = BigDecimal(usdBalance.toDouble()).setScale(2, RoundingMode.HALF_EVEN)
                 binding.coinName.text = "Dollar"
                 binding.coinSymbol.text = "USD"
-                //binding.amountOfCoinsAndSymbol.text = "$$balanceUsdFormatted"
                 binding.amountOfCoinsAndSymbol.text = "$$balanceUsdFormatted"
-
                 binding.usdBalance.text = ""
 
             } else{
@@ -68,7 +66,6 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
                 holder.bind(transactionList[position], currency, balanceUsd*-1F)
             }
         }
-        Log.d("PortofolioAdapter", "onBindViewHolder")
     }
 
     override fun getItemCount(): Int {
@@ -76,15 +73,12 @@ class PortofolioItemAdapter() : RecyclerView.Adapter<PortofolioItemAdapter.ViewH
     }
 
     fun setTransactionList(list: List<GroupedSumAndNameTransaction>) {
-        Log.d("PortofolioAdapter", "setTransactionList")
         transactionList.clear()
         transactionList.addAll(list)
         notifyDataSetChanged()
-        //Log.d("PortofolioAdapter", "currencyName: ${transactionList[0].coinName} updated balance: ${transactionList[0].amountOfCoin * transactionList[0].updatedPrice}")
     }
 
     fun setUpdatedPriceList(list: List<Coins>){
-        Log.d("PortofolioAdapter", "setUpdatedPriceList")
         updatedPriceList.clear()
         updatedPriceList.addAll(list)
         notifyDataSetChanged()
